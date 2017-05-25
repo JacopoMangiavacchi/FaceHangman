@@ -10,6 +10,16 @@ import UIKit
 import Gifu
 
 class ViewController: UIViewController, FaceDetectorDelegate {
+
+    enum EyesStatus {
+        case nothing
+        case blinking
+        case left
+        case right
+    }
+    
+    var eyesStatus: EyesStatus = .nothing
+    
     lazy var faceDetector: FaceDetector = {
         var temp = FaceDetector()
         temp.delegate = self
@@ -57,6 +67,17 @@ class ViewController: UIViewController, FaceDetectorDelegate {
 //        return temp
 //    }()
 
+    lazy var label: UILabel = {
+        var temp = UILabel(frame: CGRect(x: 0,
+                                             y: 40,
+                                             width: UIScreen.main.bounds.width,
+                                             height: 100))
+        temp.textColor = self.greenColor
+        temp.font = UIFont(name: "HelveticaNeue-Light", size: 48.0)
+        temp.textAlignment = .center
+        return temp
+    }()
+
     let greenColor = UIColor(red: 212/255.0, green: 234/255.0, blue: 95/255.0, alpha: 1.0)
 
     
@@ -77,6 +98,7 @@ class ViewController: UIViewController, FaceDetectorDelegate {
         self.view.addSubview(hangmanImage)
         self.view.addSubview(leftEyeGif)
         self.view.addSubview(rightEyeGif)
+        self.view.addSubview(label)
 //        self.view.addSubview(faceRect)
     }
     
@@ -108,6 +130,8 @@ class ViewController: UIViewController, FaceDetectorDelegate {
 //            }
 //        }
 
+        //print(events)
+        
         if events.contains(.faceDetected) {
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 0.5, animations: {
@@ -116,6 +140,7 @@ class ViewController: UIViewController, FaceDetectorDelegate {
                 })
             }
         }
+        
         if events.contains(.noFaceDetected) {
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 0.3, animations: {
@@ -124,12 +149,45 @@ class ViewController: UIViewController, FaceDetectorDelegate {
                 })
             }
         }
-        if let leftPos = self.faceDetector.leftEyePosition, let rightPos = self.faceDetector.rightEyePosition, self.faceDetector.faceDetected {
+
+        if self.faceDetector.faceDetected {
+            if let leftPos = self.faceDetector.leftEyePosition, let rightPos = self.faceDetector.rightEyePosition {
+                DispatchQueue.main.async {
+                    self.leftEyeGif.center = leftPos
+                    self.rightEyeGif.center = rightPos
+                }
+            }
+            
+            if self.faceDetector.isBlinking {
+                eyesStatus = .blinking
+            }
+            else if self.faceDetector.isWinking {
+                if self.faceDetector.leftEyeClosed {
+                    eyesStatus = .left
+                }
+                else {
+                    eyesStatus = .right
+                }
+            }
+            else {
+                eyesStatus = .nothing
+            }
+
             DispatchQueue.main.async {
-                self.leftEyeGif.center = leftPos
-                self.rightEyeGif.center = rightPos
+                switch self.eyesStatus {
+                case .nothing:
+                    self.label.text = ""
+                case .blinking:
+                    self.label.text = "BLINK"
+                case .left:
+                    self.label.text = "RIGHT"
+                case .right:
+                    self.label.text = "LEFT"
+                }
+                
             }
         }
+        
         
         
 //        if let pos = self.faceDetector.leftEyePosition {
