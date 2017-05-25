@@ -182,7 +182,6 @@ class ViewController: UIViewController, FaceDetectorDelegate {
                     (eyesStatus == .left && !self.faceDetector.leftEyeClosed) ||
                     (eyesStatus == .right && !self.faceDetector.rightEyeClosed) {
                         eyesStatus = .nothing
-                        print("WARNING")
                 }
             }
         }
@@ -194,9 +193,9 @@ class ViewController: UIViewController, FaceDetectorDelegate {
             case .blinking:
                 self.label.text = "BLINK"
             case .left:
-                self.label.text = "RIGHT"
-            case .right:
                 self.label.text = "LEFT"
+            case .right:
+                self.label.text = "RIGTH"
             }
         }
     }
