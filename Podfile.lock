@@ -1,0 +1,15 @@
+PODS:
+  - Alamofire (4.4.0)
+  - Gifu (2.0.0)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.4)
+  - Gifu
+
+SPEC CHECKSUMS:
+  Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
+  Gifu: 56a4d8f1092399159fa32662aa2232158b48d8ac
+
+PODFILE CHECKSUM: 452f5cb8060e119bc4a343fd4f52aeb957a4733d
+
+COCOAPODS: 1.2.0
