@@ -132,20 +132,22 @@ class ViewController: UIViewController, FaceDetectorDelegate {
 
         //print(events)
         
-        if events.contains(.faceDetected) {
-            DispatchQueue.main.async {
-                UIView.animate(withDuration: 0.5, animations: {
-                    self.leftEyeGif.alpha = 1.0
-                    self.rightEyeGif.alpha = 1.0
-                })
-            }
-        }
-        
         if events.contains(.noFaceDetected) {
+            eyesStatus = .nothing
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 0.3, animations: {
                     self.leftEyeGif.alpha = 0
                     self.rightEyeGif.alpha = 0
+                })
+            }
+        }
+        
+        if events.contains(.faceDetected) {
+            eyesStatus = .nothing
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.leftEyeGif.alpha = 1.0
+                    self.rightEyeGif.alpha = 1.0
                 })
             }
         }
@@ -158,43 +160,44 @@ class ViewController: UIViewController, FaceDetectorDelegate {
                 }
             }
             
-            if self.faceDetector.isBlinking {
+            if events.contains(.blinking) {
                 eyesStatus = .blinking
             }
-            else if self.faceDetector.isWinking {
-                if self.faceDetector.leftEyeClosed {
+            else if events.contains(.notBlinking) {
+                eyesStatus = .nothing
+            }
+            else if events.contains(.winking) {
+                if events.contains(.leftEyeClosed) {
                     eyesStatus = .left
                 }
-                else {
+                else if events.contains(.rightEyeClosed) {
                     eyesStatus = .right
                 }
             }
-            else {
+            else if events.contains(.notWinking) {
                 eyesStatus = .nothing
             }
-
-            DispatchQueue.main.async {
-                switch self.eyesStatus {
-                case .nothing:
-                    self.label.text = ""
-                case .blinking:
-                    self.label.text = "BLINK"
-                case .left:
-                    self.label.text = "RIGHT"
-                case .right:
-                    self.label.text = "LEFT"
+            else {
+                if  (eyesStatus == .blinking && !self.faceDetector.isBlinking) ||
+                    (eyesStatus == .left && !self.faceDetector.leftEyeClosed) ||
+                    (eyesStatus == .right && !self.faceDetector.rightEyeClosed) {
+                        eyesStatus = .nothing
+                        print("WARNING")
                 }
-                
             }
         }
-        
-        
-        
-//        if let pos = self.faceDetector.leftEyePosition {
-//            self.leftEyeGif.center = pos
-//        }
-//        if let pos = self.faceDetector.rightEyePosition {
-//            self.rightEyeGif.center = pos
-//        }
+
+        DispatchQueue.main.async {
+            switch self.eyesStatus {
+            case .nothing:
+                self.label.text = ""
+            case .blinking:
+                self.label.text = "BLINK"
+            case .left:
+                self.label.text = "RIGHT"
+            case .right:
+                self.label.text = "LEFT"
+            }
+        }
     }
 }
