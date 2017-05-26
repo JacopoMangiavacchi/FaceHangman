@@ -11,13 +11,6 @@ import Gifu
 
 class ViewController: UIViewController, FaceDetectorDelegate {
 
-    enum EyesStatus {
-        case nothing
-        case blinking
-        case left
-        case right
-    }
-    
     var eyesStatus: EyesStatus = .nothing
     
     lazy var faceDetector: FaceDetector = {
