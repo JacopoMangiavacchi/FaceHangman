@@ -41,13 +41,13 @@ class FaceDetectorFilter: FaceDetectorDelegate {
     func faceDetectorEvent(_ events: [FaceDetectorEvent]) {
         if events.contains(.noFaceDetected) {
             DispatchQueue.main.async {
-                self.delegate.faceDetected()
+                self.delegate.faceUnDetected()
             }
         }
         
         if events.contains(.faceDetected) {
             DispatchQueue.main.async {
-                self.delegate.faceUnDetected()
+                self.delegate.faceDetected()
             }
         }
         

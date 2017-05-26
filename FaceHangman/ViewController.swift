@@ -9,14 +9,16 @@
 import UIKit
 import Gifu
 
-class ViewController: UIViewController, FaceDetectorDelegate {
+class ViewController: UIViewController, FaceDetectorFilterDelegate {
 
     var eyesStatus: EyesStatus = .nothing
     
+    var faceDetectorFilter: FaceDetectorFilter!
     lazy var faceDetector: FaceDetector = {
-        var temp = FaceDetector()
-        temp.delegate = self
-        return temp
+        var detector = FaceDetector()
+        self.faceDetectorFilter = FaceDetectorFilter(faceDetector: detector, delegate: self)
+        detector.delegate = self.faceDetectorFilter
+        return detector
     }()
 
     lazy var hangmanImage: UIImageView = {
@@ -100,96 +102,69 @@ class ViewController: UIViewController, FaceDetectorDelegate {
     }
 
     
-    //MARK: FaceDetector Delegate
+    //MARK: FaceDetectorFilter Delegate
+    func faceDetected() {
+//        UIView.animate(withDuration: 0.5, animations: {
+//            self.faceRect.alpha = 0.5
+//        })
+        
+        cancel()
+        
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.leftEyeGif.alpha = 1.0
+                self.rightEyeGif.alpha = 1.0
+            })
+        }
+    }
     
-    func faceDetectorEvent(_ events: [FaceDetectorEvent]) {
-//        if events.contains(.faceDetected) {
-//            DispatchQueue.main.async {
-//                UIView.animate(withDuration: 0.5, animations: {
-//                    self.faceRect.alpha = 0.5
-//                })
-//            }
-//        }
-//        if events.contains(.noFaceDetected) {
-//            DispatchQueue.main.async {
-//                UIView.animate(withDuration: 0.3, animations: {
-//                    self.faceRect.alpha = 0
-//                })
-//            }
-//        }
+    func faceUnDetected() {
+//        UIView.animate(withDuration: 0.3, animations: {
+//            self.faceRect.alpha = 0
+//        })
+        
+        cancel()
+        
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.leftEyeGif.alpha = 0
+                self.rightEyeGif.alpha = 0
+            })
+        }
+    }
+    
+    func faceEyePosition(left: CGPoint, right: CGPoint) {
 //        if let bounds = self.faceDetector.faceBounds, self.faceDetector.faceDetected {
 //            DispatchQueue.main.async {
 //                self.faceRect.frame = bounds
 //            }
 //        }
-
-        //print(events)
         
-        if events.contains(.noFaceDetected) {
-            eyesStatus = .nothing
+        if let leftPos = self.faceDetector.leftEyePosition, let rightPos = self.faceDetector.rightEyePosition {
             DispatchQueue.main.async {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.leftEyeGif.alpha = 0
-                    self.rightEyeGif.alpha = 0
-                })
+                self.leftEyeGif.center = leftPos
+                self.rightEyeGif.center = rightPos
             }
         }
-        
-        if events.contains(.faceDetected) {
-            eyesStatus = .nothing
-            DispatchQueue.main.async {
-                UIView.animate(withDuration: 0.5, animations: {
-                    self.leftEyeGif.alpha = 1.0
-                    self.rightEyeGif.alpha = 1.0
-                })
-            }
-        }
-
-        if self.faceDetector.faceDetected {
-            if let leftPos = self.faceDetector.leftEyePosition, let rightPos = self.faceDetector.rightEyePosition {
-                DispatchQueue.main.async {
-                    self.leftEyeGif.center = leftPos
-                    self.rightEyeGif.center = rightPos
-                }
-            }
-            
-            if events.contains(.blinking) {
-                eyesStatus = .blinking
-            }
-            else if events.contains(.notBlinking) {
-                eyesStatus = .nothing
-            }
-            else if events.contains(.winking) {
-                if events.contains(.leftEyeClosed) {
-                    eyesStatus = .left
-                }
-                else if events.contains(.rightEyeClosed) {
-                    eyesStatus = .right
-                }
-            }
-            else if events.contains(.notWinking) {
-                eyesStatus = .nothing
-            }
-            else {
-                if  (eyesStatus == .blinking && !self.faceDetector.isBlinking) ||
-                    (eyesStatus == .left && !self.faceDetector.leftEyeClosed) ||
-                    (eyesStatus == .right && !self.faceDetector.rightEyeClosed) {
-                        eyesStatus = .nothing
-                }
-            }
-        }
-
-        DispatchQueue.main.async {
-            switch self.eyesStatus {
-            case .nothing:
-                self.label.text = ""
-            case .blinking:
-                self.label.text = "BLINK"
-            case .left:
-                self.label.text = "LEFT"
-            case .right:
-                self.label.text = "RIGTH"
-            }
-        }
+    }
+    
+    func cancel() {
+        eyesStatus = .blinking
+        self.label.text = ""
+    }
+    
+    func blinking() {
+        eyesStatus = .blinking
+        self.label.text = "BLINK"
+    }
+    
+    func leftWinking() {
+        eyesStatus = .left
+        self.label.text = "LEFT"
+    }
+    
+    func rightWinking() {
+        eyesStatus = .right
+        self.label.text = "RIGHT"
     }
 }

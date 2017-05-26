@@ -17,8 +17,8 @@
 		EA12D4571ED40BDC0070D1F0 /* HangmanGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA12D4561ED40BDC0070D1F0 /* HangmanGame.swift */; };
 		EA9246901ED6DCF900A96650 /* faceMask.png in Resources */ = {isa = PBXBuildFile; fileRef = EA92468C1ED6DCF900A96650 /* faceMask.png */; };
 		EA9246911ED6DCF900A96650 /* hangman.png in Resources */ = {isa = PBXBuildFile; fileRef = EA92468D1ED6DCF900A96650 /* hangman.png */; };
-		EA9246921ED6DCF900A96650 /* leftEye.gif in Resources */ = {isa = PBXBuildFile; fileRef = EA92468E1ED6DCF900A96650 /* leftEye.gif */; };
-		EA9246931ED6DCF900A96650 /* rightEye.gif in Resources */ = {isa = PBXBuildFile; fileRef = EA92468F1ED6DCF900A96650 /* rightEye.gif */; };
+		EA9246921ED6DCF900A96650 /* rightEye.gif in Resources */ = {isa = PBXBuildFile; fileRef = EA92468E1ED6DCF900A96650 /* rightEye.gif */; };
+		EA9246931ED6DCF900A96650 /* leftEye.gif in Resources */ = {isa = PBXBuildFile; fileRef = EA92468F1ED6DCF900A96650 /* leftEye.gif */; };
 		EAE1271A1ED77FA500F72E0A /* FaceDetectorFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE127191ED77FA500F72E0A /* FaceDetectorFilter.swift */; };
 /* End PBXBuildFile section */
 
@@ -36,8 +36,8 @@
 		EA12D4561ED40BDC0070D1F0 /* HangmanGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HangmanGame.swift; sourceTree = "<group>"; };
 		EA92468C1ED6DCF900A96650 /* faceMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = faceMask.png; path = Assets/faceMask.png; sourceTree = "<group>"; };
 		EA92468D1ED6DCF900A96650 /* hangman.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hangman.png; path = Assets/hangman.png; sourceTree = "<group>"; };
-		EA92468E1ED6DCF900A96650 /* leftEye.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = leftEye.gif; path = Assets/leftEye.gif; sourceTree = "<group>"; };
-		EA92468F1ED6DCF900A96650 /* rightEye.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = rightEye.gif; path = Assets/rightEye.gif; sourceTree = "<group>"; };
+		EA92468E1ED6DCF900A96650 /* rightEye.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = rightEye.gif; path = Assets/rightEye.gif; sourceTree = "<group>"; };
+		EA92468F1ED6DCF900A96650 /* leftEye.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = leftEye.gif; path = Assets/leftEye.gif; sourceTree = "<group>"; };
 		EAE127191ED77FA500F72E0A /* FaceDetectorFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceDetectorFilter.swift; sourceTree = "<group>"; };
 		F8043F81F0CEB7B7024DD91C /* Pods_FaceHangman.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FaceHangman.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -111,8 +111,8 @@
 			children = (
 				EA92468C1ED6DCF900A96650 /* faceMask.png */,
 				EA92468D1ED6DCF900A96650 /* hangman.png */,
-				EA92468E1ED6DCF900A96650 /* leftEye.gif */,
-				EA92468F1ED6DCF900A96650 /* rightEye.gif */,
+				EA92468E1ED6DCF900A96650 /* rightEye.gif */,
+				EA92468F1ED6DCF900A96650 /* leftEye.gif */,
 			);
 			name = Assets;
 			sourceTree = "<group>";
@@ -181,12 +181,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA12D44D1ED40B750070D1F0 /* LaunchScreen.storyboard in Resources */,
-				EA9246931ED6DCF900A96650 /* rightEye.gif in Resources */,
+				EA9246931ED6DCF900A96650 /* leftEye.gif in Resources */,
 				EA12D44A1ED40B750070D1F0 /* Assets.xcassets in Resources */,
 				EA9246911ED6DCF900A96650 /* hangman.png in Resources */,
 				EA9246901ED6DCF900A96650 /* faceMask.png in Resources */,
 				EA12D4481ED40B750070D1F0 /* Main.storyboard in Resources */,
-				EA9246921ED6DCF900A96650 /* leftEye.gif in Resources */,
+				EA9246921ED6DCF900A96650 /* rightEye.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
