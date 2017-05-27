@@ -10,11 +10,10 @@
 		1C4F313C0EFD9C1306DB43EC /* Pods_FaceHangman.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8043F81F0CEB7B7024DD91C /* Pods_FaceHangman.framework */; };
 		EA12D4431ED40B750070D1F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA12D4421ED40B750070D1F0 /* AppDelegate.swift */; };
 		EA12D4451ED40B750070D1F0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA12D4441ED40B750070D1F0 /* ViewController.swift */; };
-		EA12D4481ED40B750070D1F0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA12D4461ED40B750070D1F0 /* Main.storyboard */; };
 		EA12D44A1ED40B750070D1F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA12D4491ED40B750070D1F0 /* Assets.xcassets */; };
-		EA12D44D1ED40B750070D1F0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA12D44B1ED40B750070D1F0 /* LaunchScreen.storyboard */; };
 		EA12D4551ED40BAD0070D1F0 /* FaceDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA12D4541ED40BAD0070D1F0 /* FaceDetector.swift */; };
 		EA12D4571ED40BDC0070D1F0 /* HangmanGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA12D4561ED40BDC0070D1F0 /* HangmanGame.swift */; };
+		EA6557751ED9704100396736 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA6557741ED9704100396736 /* Default-568h@2x.png */; };
 		EA9246901ED6DCF900A96650 /* faceMask.png in Resources */ = {isa = PBXBuildFile; fileRef = EA92468C1ED6DCF900A96650 /* faceMask.png */; };
 		EA9246911ED6DCF900A96650 /* hangman.png in Resources */ = {isa = PBXBuildFile; fileRef = EA92468D1ED6DCF900A96650 /* hangman.png */; };
 		EA9246921ED6DCF900A96650 /* rightEye.gif in Resources */ = {isa = PBXBuildFile; fileRef = EA92468E1ED6DCF900A96650 /* rightEye.gif */; };
@@ -28,12 +27,11 @@
 		EA12D43F1ED40B750070D1F0 /* FaceHangman.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FaceHangman.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA12D4421ED40B750070D1F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EA12D4441ED40B750070D1F0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		EA12D4471ED40B750070D1F0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EA12D4491ED40B750070D1F0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		EA12D44C1ED40B750070D1F0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EA12D44E1ED40B750070D1F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA12D4541ED40BAD0070D1F0 /* FaceDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceDetector.swift; sourceTree = "<group>"; };
 		EA12D4561ED40BDC0070D1F0 /* HangmanGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HangmanGame.swift; sourceTree = "<group>"; };
+		EA6557741ED9704100396736 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		EA92468C1ED6DCF900A96650 /* faceMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = faceMask.png; path = Assets/faceMask.png; sourceTree = "<group>"; };
 		EA92468D1ED6DCF900A96650 /* hangman.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hangman.png; path = Assets/hangman.png; sourceTree = "<group>"; };
 		EA92468E1ED6DCF900A96650 /* rightEye.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = rightEye.gif; path = Assets/rightEye.gif; sourceTree = "<group>"; };
@@ -74,6 +72,7 @@
 		EA12D4361ED40B750070D1F0 = {
 			isa = PBXGroup;
 			children = (
+				EA6557741ED9704100396736 /* Default-568h@2x.png */,
 				EA4F614C1ED49CE700526244 /* Assets */,
 				EA12D4411ED40B750070D1F0 /* FaceHangman */,
 				EA12D4401ED40B750070D1F0 /* Products */,
@@ -98,9 +97,7 @@
 				EAE127191ED77FA500F72E0A /* FaceDetectorFilter.swift */,
 				EA12D4541ED40BAD0070D1F0 /* FaceDetector.swift */,
 				EA12D4561ED40BDC0070D1F0 /* HangmanGame.swift */,
-				EA12D4461ED40B750070D1F0 /* Main.storyboard */,
 				EA12D4491ED40B750070D1F0 /* Assets.xcassets */,
-				EA12D44B1ED40B750070D1F0 /* LaunchScreen.storyboard */,
 				EA12D44E1ED40B750070D1F0 /* Info.plist */,
 			);
 			path = FaceHangman;
@@ -180,13 +177,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EA12D44D1ED40B750070D1F0 /* LaunchScreen.storyboard in Resources */,
 				EA9246931ED6DCF900A96650 /* leftEye.gif in Resources */,
 				EA12D44A1ED40B750070D1F0 /* Assets.xcassets in Resources */,
 				EA9246911ED6DCF900A96650 /* hangman.png in Resources */,
 				EA9246901ED6DCF900A96650 /* faceMask.png in Resources */,
-				EA12D4481ED40B750070D1F0 /* Main.storyboard in Resources */,
 				EA9246921ED6DCF900A96650 /* rightEye.gif in Resources */,
+				EA6557751ED9704100396736 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,25 +250,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		EA12D4461ED40B750070D1F0 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				EA12D4471ED40B750070D1F0 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		EA12D44B1ED40B750070D1F0 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				EA12D44C1ED40B750070D1F0 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		EA12D44F1ED40B750070D1F0 /* Debug */ = {
@@ -374,6 +351,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D4D2102B49D7CC27E147FBCD /* Pods-FaceHangman.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = SV6W498A95;
 				INFOPLIST_FILE = FaceHangman/Info.plist;
@@ -389,6 +367,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 67957BD766C4A97413DA46DC /* Pods-FaceHangman.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = SV6W498A95;
 				INFOPLIST_FILE = FaceHangman/Info.plist;
