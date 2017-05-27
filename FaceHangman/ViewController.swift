@@ -8,9 +8,13 @@
 
 import UIKit
 import Gifu
+import SwiftCarousel
 
 class ViewController: UIViewController, FaceDetectorFilterDelegate {
 
+    var items: [String]?
+    var itemsViews: [UILabel]?
+    
     var eyesStatus: EyesStatus = .nothing
     
     var faceDetectorFilter: FaceDetectorFilter!
@@ -62,11 +66,28 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
 //        return temp
 //    }()
 
+    lazy var carousel: SwiftCarousel = {
+        var carousel = SwiftCarousel(frame: CGRect(x: 0,
+                                         y: 20,
+                                         width: UIScreen.main.bounds.width,
+                                         height: UIScreen.main.bounds.height / 10))
+        self.items = (0..<26).map { String(format: "%c", 65 + $0) }
+        
+        self.itemsViews = self.items!.map { self.labelForString($0) }
+        carousel.items = self.itemsViews!
+        carousel.resizeType = .visibleItemsPerPage(5)
+        carousel.defaultSelectedIndex = 0
+        carousel.delegate = self
+        carousel.scrollType = .default
+
+        return carousel
+    }()
+
     lazy var label: UILabel = {
         var temp = UILabel(frame: CGRect(x: 0,
-                                             y: 40,
+                                             y: 20 + UIScreen.main.bounds.height / 10,
                                              width: UIScreen.main.bounds.width,
-                                             height: 100))
+                                             height: UIScreen.main.bounds.height / 10))
         temp.textColor = self.greenColor
         temp.font = UIFont(name: "HelveticaNeue-Light", size: 48.0)
         temp.textAlignment = .center
@@ -94,11 +115,24 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         self.view.addSubview(leftEyeGif)
         self.view.addSubview(rightEyeGif)
         self.view.addSubview(label)
+        self.view.addSubview(carousel)
 //        self.view.addSubview(faceRect)
     }
     
     override var prefersStatusBarHidden : Bool {
         return false
+    }
+
+    
+    func labelForString(_ string: String) -> UILabel {
+        let text = UILabel()
+        text.text = string
+        text.textColor = .white
+        text.textAlignment = .center
+        text.font = .systemFont(ofSize: 24.0)
+        text.numberOfLines = 0
+        
+        return text
     }
 
     
@@ -161,10 +195,44 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     func leftWinking() {
         eyesStatus = .left
         self.label.text = "LEFT"
+        carousel.selectItem((carousel.selectedIndex! - 1) % 26, animated: true)
     }
     
     func rightWinking() {
         eyesStatus = .right
         self.label.text = "RIGHT"
+        carousel.selectItem((carousel.selectedIndex! + 1) % 26, animated: true)
     }
 }
+
+
+extension ViewController: SwiftCarouselDelegate {
+    
+    func didSelectItem(item: UIView, index: Int, tapped: Bool) -> UIView? {
+        if let animal = item as? UILabel {
+            animal.textColor = greenColor
+            return animal
+        }
+        
+        return item
+    }
+    
+    func didDeselectItem(item: UIView, index: Int) -> UIView? {
+        if let animal = item as? UILabel {
+            animal.textColor = .white
+            return animal
+        }
+        
+        return item
+    }
+    
+    func didScroll(toOffset offset: CGPoint) {
+    }
+    
+//    func willBeginDragging(withOffset offset: CGPoint) {
+//    }
+    
+//    func didEndDragging(withOffset offset: CGPoint) {
+//    }
+}
+

@@ -8,5 +8,5 @@ target 'FaceHangman' do
   # Pods for FaceHangman
   pod 'Alamofire', '~> 4.4'
   pod 'Gifu'
-  
+  pod "SwiftCarousel"  
 end

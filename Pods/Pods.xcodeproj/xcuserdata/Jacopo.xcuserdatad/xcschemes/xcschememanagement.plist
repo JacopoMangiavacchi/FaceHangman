@@ -19,20 +19,30 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SwiftCarousel.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>3980F2B3F8492F7D4FBF4B15182A2589</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>5B9888C33DE4EBFB8177CEA845DEEA74</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>61C35B012E9A9480E71776717F7DC7F9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>88E9EC28B8B46C3631E6B242B50F4442</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A531DCE46D2BD1210884EB118CB3C5DD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
