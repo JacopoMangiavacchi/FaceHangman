@@ -57,13 +57,15 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     }()
     
     lazy var rightEyeGif: GIFImageView = {
-        let temp = GIFImageView(frame: CGRect(x: 80, y: 250, width: 150, height: 80))
+        let temp = GIFImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width / 2.1, height: UIScreen.main.bounds.height / 7.1))  //150x80
+        temp.alpha = 0.0
         temp.animate(withGIFNamed: "rightEye.gif")
         return temp
     }()
 
     lazy var leftEyeGif: GIFImageView = {
-        let temp = GIFImageView(frame: CGRect(x: 180, y: 250, width: 150, height: 80))
+        let temp = GIFImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width / 2.1, height: UIScreen.main.bounds.height / 7.1)) //150x80
+        temp.alpha = 0.0
         temp.animate(withGIFNamed: "leftEye.gif")
         return temp
     }()

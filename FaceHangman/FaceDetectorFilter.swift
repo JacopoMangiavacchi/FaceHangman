@@ -32,7 +32,8 @@ class FaceDetectorFilter: FaceDetectorDelegate {
 
     var eyesStatus: EyesStatus = .nothing
     //TODO: ADD CACHED eyesStatus !!!
-    var startBlinking: DispatchTime?
+    var startBlinking: CFAbsoluteTime?
+    var startWinking: CFAbsoluteTime?
     
     
     init(faceDetector: FaceDetector, delegate: FaceDetectorFilterDelegate) {
@@ -61,14 +62,10 @@ class FaceDetectorFilter: FaceDetectorDelegate {
             }
             
             if events.contains(.blinking) {
-                startBlinking = DispatchTime.now()
-//                print("START \(Date()) - \(Double(DispatchTime.now().uptimeNanoseconds)) \(Double(self.startBlinking!.uptimeNanoseconds)) \((Double(DispatchTime.now().uptimeNanoseconds) - Double(self.startBlinking!.uptimeNanoseconds))/1_000_000_000)")
+                startBlinking = CFAbsoluteTimeGetCurrent()
                 eyesStatus = .blinking
-                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000), execute: {
-//                    print("END \(Date()) - \(Double(DispatchTime.now().uptimeNanoseconds)) \(Double(self.startBlinking!.uptimeNanoseconds)) \((Double(DispatchTime.now().uptimeNanoseconds) - Double(self.startBlinking!.uptimeNanoseconds))/1_000_000_000)")
-//                    if self.eyesStatus == .blinking && self.startBlinking != nil && Double(DispatchTime.now().uptimeNanoseconds) - Double(self.startBlinking!.uptimeNanoseconds) >= 1_000_000_000  {
-                    if self.eyesStatus == .blinking {
-//                        print("BLINK")
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(750), execute: {
+                    if self.eyesStatus == .blinking && self.startBlinking != nil && CFAbsoluteTimeGetCurrent() - self.startBlinking! > 0.7  {
                         self.delegate.blinking()
                     }
                 })
