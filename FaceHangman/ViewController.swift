@@ -24,6 +24,8 @@ extension SystemSoundID {
 
 class ViewController: UIViewController, FaceDetectorFilterDelegate {
 
+    let greenColor = UIColor(red: 212/255.0, green: 234/255.0, blue: 95/255.0, alpha: 1.0)
+
     var items: [String]?
     var itemsViews: [UILabel]?
     
@@ -108,8 +110,8 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         return temp
     }()
 
-    let greenColor = UIColor(red: 212/255.0, green: 234/255.0, blue: 95/255.0, alpha: 1.0)
-
+    var timer = Timer()
+    var isTimerRunning = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -199,6 +201,30 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     func cancel() {
         eyesStatus = .blinking
         self.label.text = ""
+        
+        timer.invalidate()
+        isTimerRunning = false
+    }
+    
+    func runTimer() {
+        if !isTimerRunning {
+            isTimerRunning = true
+            timer = Timer.scheduledTimer(timeInterval: 0.7, target: self,   selector: (#selector(ViewController.updateTimer)), userInfo: nil, repeats: false)
+        }
+    }
+    
+    func updateTimer() {
+        SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
+        if eyesStatus == .left {
+            self.label.text = "LEFT"
+            carousel.selectItem((carousel.selectedIndex! - 1) % 26, animated: true)
+        }
+        else if eyesStatus == .right {
+            self.label.text = "RIGHT"
+            carousel.selectItem((carousel.selectedIndex! + 1) % 26, animated: true)
+        }
+
+        timer = Timer.scheduledTimer(timeInterval: 0.2, target: self,   selector: (#selector(ViewController.updateTimer)), userInfo: nil, repeats: false)
     }
     
     func blinking() {
@@ -212,6 +238,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
         self.label.text = "LEFT"
         carousel.selectItem((carousel.selectedIndex! - 1) % 26, animated: true)
+        runTimer()
     }
     
     func rightWinking() {
@@ -219,6 +246,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
         self.label.text = "RIGHT"
         carousel.selectItem((carousel.selectedIndex! + 1) % 26, animated: true)
+        runTimer()
     }
 }
 

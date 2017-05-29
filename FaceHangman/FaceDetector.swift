@@ -65,7 +65,7 @@ class FaceDetector: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
         super.init()
         
         captureSetup(AVCaptureDevicePosition.front)
-        detector = CIDetector(ofType: CIDetectorTypeFace, context: nil, options: [CIDetectorAccuracy : CIDetectorAccuracyLow as AnyObject])
+        detector = CIDetector(ofType: CIDetectorTypeFace, context: nil, options: [CIDetectorAccuracy : CIDetectorAccuracyHigh as AnyObject])
     }
     
     //MARK: SETUP OF VIDEOCAPTURE
