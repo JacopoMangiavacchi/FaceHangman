@@ -9,6 +9,18 @@
 import UIKit
 import Gifu
 import SwiftCarousel
+import AudioToolbox
+
+
+extension SystemSoundID {
+    static func playFileNamed(_ fileName: String, withExtenstion fileExtension: String) {
+        var sound: SystemSoundID = 0
+        if let soundURL = Bundle.main.url(forResource: fileName, withExtension: fileExtension) {
+            AudioServicesCreateSystemSoundID(soundURL as CFURL, &sound)
+            AudioServicesPlaySystemSound(sound)
+        }
+    }
+}
 
 class ViewController: UIViewController, FaceDetectorFilterDelegate {
 
@@ -189,17 +201,20 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     
     func blinking() {
         eyesStatus = .blinking
+        SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
         self.label.text = "BLINK"
     }
     
     func leftWinking() {
         eyesStatus = .left
+        SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
         self.label.text = "LEFT"
         carousel.selectItem((carousel.selectedIndex! - 1) % 26, animated: true)
     }
     
     func rightWinking() {
         eyesStatus = .right
+        SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
         self.label.text = "RIGHT"
         carousel.selectItem((carousel.selectedIndex! + 1) % 26, animated: true)
     }

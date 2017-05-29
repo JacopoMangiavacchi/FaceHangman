@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1C4F313C0EFD9C1306DB43EC /* Pods_FaceHangman.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8043F81F0CEB7B7024DD91C /* Pods_FaceHangman.framework */; };
+		EA0BA1181EDC24A30005E7D2 /* tick.aiff in Resources */ = {isa = PBXBuildFile; fileRef = EA0BA1171EDC24A30005E7D2 /* tick.aiff */; };
+		EA0BA11A1EDC270B0005E7D2 /* blink.aiff in Resources */ = {isa = PBXBuildFile; fileRef = EA0BA1191EDC270B0005E7D2 /* blink.aiff */; };
 		EA12D4431ED40B750070D1F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA12D4421ED40B750070D1F0 /* AppDelegate.swift */; };
 		EA12D4451ED40B750070D1F0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA12D4441ED40B750070D1F0 /* ViewController.swift */; };
 		EA12D44A1ED40B750070D1F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA12D4491ED40B750070D1F0 /* Assets.xcassets */; };
@@ -24,6 +26,8 @@
 /* Begin PBXFileReference section */
 		67957BD766C4A97413DA46DC /* Pods-FaceHangman.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceHangman.release.xcconfig"; path = "Pods/Target Support Files/Pods-FaceHangman/Pods-FaceHangman.release.xcconfig"; sourceTree = "<group>"; };
 		D4D2102B49D7CC27E147FBCD /* Pods-FaceHangman.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceHangman.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FaceHangman/Pods-FaceHangman.debug.xcconfig"; sourceTree = "<group>"; };
+		EA0BA1171EDC24A30005E7D2 /* tick.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = tick.aiff; sourceTree = "<group>"; };
+		EA0BA1191EDC270B0005E7D2 /* blink.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = blink.aiff; sourceTree = "<group>"; };
 		EA12D43F1ED40B750070D1F0 /* FaceHangman.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FaceHangman.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA12D4421ED40B750070D1F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EA12D4441ED40B750070D1F0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -73,6 +77,8 @@
 			isa = PBXGroup;
 			children = (
 				EA6557741ED9704100396736 /* Default-568h@2x.png */,
+				EA0BA1171EDC24A30005E7D2 /* tick.aiff */,
+				EA0BA1191EDC270B0005E7D2 /* blink.aiff */,
 				EA4F614C1ED49CE700526244 /* Assets */,
 				EA12D4411ED40B750070D1F0 /* FaceHangman */,
 				EA12D4401ED40B750070D1F0 /* Products */,
@@ -179,9 +185,11 @@
 			files = (
 				EA9246931ED6DCF900A96650 /* leftEye.gif in Resources */,
 				EA12D44A1ED40B750070D1F0 /* Assets.xcassets in Resources */,
+				EA0BA1181EDC24A30005E7D2 /* tick.aiff in Resources */,
 				EA9246911ED6DCF900A96650 /* hangman.png in Resources */,
 				EA9246901ED6DCF900A96650 /* faceMask.png in Resources */,
 				EA9246921ED6DCF900A96650 /* rightEye.gif in Resources */,
+				EA0BA11A1EDC270B0005E7D2 /* blink.aiff in Resources */,
 				EA6557751ED9704100396736 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
