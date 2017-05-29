@@ -10,6 +10,7 @@ import UIKit
 import Gifu
 import SwiftCarousel
 import AudioToolbox
+import Alamofire
 
 
 extension SystemSoundID {
@@ -105,7 +106,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                                              width: UIScreen.main.bounds.width,
                                              height: UIScreen.main.bounds.height / 10))
         temp.textColor = self.greenColor
-        temp.font = UIFont(name: "HelveticaNeue-Light", size: 48.0)
+        temp.font = UIFont(name: "HelveticaNeue-Light", size: 32.0)
         temp.textAlignment = .center
         return temp
     }()
@@ -113,26 +114,42 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     var timer = Timer()
     var isTimerRunning = false
     
+    var game: HangmanGame?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         faceDetector.beginFaceDetection()
         
         let cameraView = faceDetector.cameraView
-        self.view.addSubview(cameraView)
+        view.addSubview(cameraView)
         
         let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
-        visualEffectView.frame = self.view.bounds
+        visualEffectView.frame = view.bounds
         visualEffectView.alpha = 0.8
-        self.view.addSubview(visualEffectView)
+        view.addSubview(visualEffectView)
         
-        self.view.addSubview(faceMaskImage)
-        self.view.addSubview(hangmanImage)
-        self.view.addSubview(leftEyeGif)
-        self.view.addSubview(rightEyeGif)
-        self.view.addSubview(label)
-        self.view.addSubview(carousel)
+        view.addSubview(faceMaskImage)
+        view.addSubview(hangmanImage)
+        view.addSubview(leftEyeGif)
+        view.addSubview(rightEyeGif)
+        view.addSubview(label)
+        view.addSubview(carousel)
 //        self.view.addSubview(faceRect)
+        
+        label.text = "loading ..."
+        
+        //Start Game
+        let APIKEY = "31b3a219fca1714c8200f0c4bbb0813f18b404b16bb3ee8ae"
+        let URL = "https://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&minCorpusCount=0&minLength=5&maxLength=15&limit=1&api_key=\(APIKEY)"
+        
+        Alamofire.request(URL).responseJSON { response in
+            if let json = response.result.value as? [[String:Any]] {
+                print(json)
+                self.game = HangmanGame(secret: json[0]["word"] as! String, maxFail: 9)
+                self.label.text = self.game?.discovered.uppercased()
+            }
+        }
     }
     
     override var prefersStatusBarHidden : Bool {
@@ -200,7 +217,6 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     
     func cancel() {
         eyesStatus = .blinking
-        self.label.text = ""
         rightEyeGif.animate(withGIFNamed: "rightEye_Opening.gif", loopCount: 1)
         leftEyeGif.animate(withGIFNamed: "leftEye_Opening.gif", loopCount: 1)
         
@@ -218,11 +234,9 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     func updateTimer() {
         SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
         if eyesStatus == .left {
-            self.label.text = "LEFT"
             carousel.selectItem((carousel.selectedIndex! - 1) % 26, animated: true)
         }
         else if eyesStatus == .right {
-            self.label.text = "RIGHT"
             carousel.selectItem((carousel.selectedIndex! + 1) % 26, animated: true)
         }
 
@@ -232,15 +246,36 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     func blinking() {
         eyesStatus = .blinking
         SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
-        self.label.text = "BLINK"
         rightEyeGif.animate(withGIFNamed: "rightEye_Closing.gif", loopCount: 1)
         leftEyeGif.animate(withGIFNamed: "leftEye_Closing.gif", loopCount: 1)
+        
+        if let _ = game {
+            switch game!.tryLetter(String(format: "%c", 65 + carousel.selectedIndex!)) {
+            case .invalidSecret:
+                print("invalidSecret")
+            case .invalidWord:
+                print("invalidWord")
+            case .alreadyTried:
+                print("alreadyTried")
+            case .won:
+                print("won")
+                label.textColor = UIColor.white
+            case .lost:
+                print("lost")
+                label.textColor = UIColor.red
+            case .found:
+                print("found")
+            case .notFound:
+                print("notFound")
+            }
+
+            label.text = game!.discovered.uppercased()
+        }
     }
     
     func leftWinking() {
         eyesStatus = .left
         SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
-        self.label.text = "LEFT"
         leftEyeGif.animate(withGIFNamed: "leftEye_Closing.gif", loopCount: 1)
         carousel.selectItem((carousel.selectedIndex! - 1) % 26, animated: true)
         runTimer()
@@ -249,7 +284,6 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     func rightWinking() {
         eyesStatus = .right
         SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
-        self.label.text = "RIGHT"
         rightEyeGif.animate(withGIFNamed: "rightEye_Closing.gif", loopCount: 1)
         carousel.selectItem((carousel.selectedIndex! + 1) % 26, animated: true)
         runTimer()

@@ -38,6 +38,8 @@ struct HangmanGame {
                 else {
                     discovered.append(secretCharacter)
                 }
+
+                discovered.append(" ")
             }
             
             return discovered
