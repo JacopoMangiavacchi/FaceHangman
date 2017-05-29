@@ -236,7 +236,7 @@ open class SwiftCarousel: UIView {
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(viewTapped(_:)))
         gestureRecognizer.cancelsTouchesInView = false
         gestureRecognizer.delegate = self
-        scrollView.addGestureRecognizer(gestureRecognizer)
+        //scrollView.addGestureRecognizer(gestureRecognizer)
     }
         
     /**

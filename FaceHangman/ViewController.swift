@@ -45,7 +45,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                                              y: 0,
                                              width: UIScreen.main.bounds.width,
                                              height: UIScreen.main.bounds.height))
-        temp.image = UIImage(named: "hangman.png")
+        temp.image = UIImage(named: "hangman_0.png")
         return temp
     }()
 
@@ -272,6 +272,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
             }
 
             label.text = game!.discovered.uppercased()
+            hangmanImage.image = UIImage(named: "hangman_\(game!.failedAttempts).png")
         }
     }
     

@@ -31,7 +31,16 @@
 		EA12D4571ED40BDC0070D1F0 /* HangmanGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA12D4561ED40BDC0070D1F0 /* HangmanGame.swift */; };
 		EA6557751ED9704100396736 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA6557741ED9704100396736 /* Default-568h@2x.png */; };
 		EA9246901ED6DCF900A96650 /* faceMask.png in Resources */ = {isa = PBXBuildFile; fileRef = EA92468C1ED6DCF900A96650 /* faceMask.png */; };
-		EA9246911ED6DCF900A96650 /* hangman.png in Resources */ = {isa = PBXBuildFile; fileRef = EA92468D1ED6DCF900A96650 /* hangman.png */; };
+		EAD573891EDC929D00D45858 /* hangman_0.png in Resources */ = {isa = PBXBuildFile; fileRef = EAD5737F1EDC929D00D45858 /* hangman_0.png */; };
+		EAD5738A1EDC929D00D45858 /* hangman_1.png in Resources */ = {isa = PBXBuildFile; fileRef = EAD573801EDC929D00D45858 /* hangman_1.png */; };
+		EAD5738B1EDC929D00D45858 /* hangman_2.png in Resources */ = {isa = PBXBuildFile; fileRef = EAD573811EDC929D00D45858 /* hangman_2.png */; };
+		EAD5738C1EDC929D00D45858 /* hangman_3.png in Resources */ = {isa = PBXBuildFile; fileRef = EAD573821EDC929D00D45858 /* hangman_3.png */; };
+		EAD5738D1EDC929D00D45858 /* hangman_4.png in Resources */ = {isa = PBXBuildFile; fileRef = EAD573831EDC929D00D45858 /* hangman_4.png */; };
+		EAD5738E1EDC929D00D45858 /* hangman_5.png in Resources */ = {isa = PBXBuildFile; fileRef = EAD573841EDC929D00D45858 /* hangman_5.png */; };
+		EAD5738F1EDC929D00D45858 /* hangman_6.png in Resources */ = {isa = PBXBuildFile; fileRef = EAD573851EDC929D00D45858 /* hangman_6.png */; };
+		EAD573901EDC929D00D45858 /* hangman_7.png in Resources */ = {isa = PBXBuildFile; fileRef = EAD573861EDC929D00D45858 /* hangman_7.png */; };
+		EAD573911EDC929D00D45858 /* hangman_8.png in Resources */ = {isa = PBXBuildFile; fileRef = EAD573871EDC929D00D45858 /* hangman_8.png */; };
+		EAD573921EDC929D00D45858 /* hangman_9.png in Resources */ = {isa = PBXBuildFile; fileRef = EAD573881EDC929D00D45858 /* hangman_9.png */; };
 		EAE1271A1ED77FA500F72E0A /* FaceDetectorFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE127191ED77FA500F72E0A /* FaceDetectorFilter.swift */; };
 /* End PBXBuildFile section */
 
@@ -63,7 +72,16 @@
 		EA12D4561ED40BDC0070D1F0 /* HangmanGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HangmanGame.swift; sourceTree = "<group>"; };
 		EA6557741ED9704100396736 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		EA92468C1ED6DCF900A96650 /* faceMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = faceMask.png; path = Assets/faceMask.png; sourceTree = "<group>"; };
-		EA92468D1ED6DCF900A96650 /* hangman.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hangman.png; path = Assets/hangman.png; sourceTree = "<group>"; };
+		EAD5737F1EDC929D00D45858 /* hangman_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hangman_0.png; path = Assets/hangman/hangman_0.png; sourceTree = "<group>"; };
+		EAD573801EDC929D00D45858 /* hangman_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hangman_1.png; path = Assets/hangman/hangman_1.png; sourceTree = "<group>"; };
+		EAD573811EDC929D00D45858 /* hangman_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hangman_2.png; path = Assets/hangman/hangman_2.png; sourceTree = "<group>"; };
+		EAD573821EDC929D00D45858 /* hangman_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hangman_3.png; path = Assets/hangman/hangman_3.png; sourceTree = "<group>"; };
+		EAD573831EDC929D00D45858 /* hangman_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hangman_4.png; path = Assets/hangman/hangman_4.png; sourceTree = "<group>"; };
+		EAD573841EDC929D00D45858 /* hangman_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hangman_5.png; path = Assets/hangman/hangman_5.png; sourceTree = "<group>"; };
+		EAD573851EDC929D00D45858 /* hangman_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hangman_6.png; path = Assets/hangman/hangman_6.png; sourceTree = "<group>"; };
+		EAD573861EDC929D00D45858 /* hangman_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hangman_7.png; path = Assets/hangman/hangman_7.png; sourceTree = "<group>"; };
+		EAD573871EDC929D00D45858 /* hangman_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hangman_8.png; path = Assets/hangman/hangman_8.png; sourceTree = "<group>"; };
+		EAD573881EDC929D00D45858 /* hangman_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hangman_9.png; path = Assets/hangman/hangman_9.png; sourceTree = "<group>"; };
 		EAE127191ED77FA500F72E0A /* FaceDetectorFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceDetectorFilter.swift; sourceTree = "<group>"; };
 		F8043F81F0CEB7B7024DD91C /* Pods_FaceHangman.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FaceHangman.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -137,7 +155,16 @@
 			isa = PBXGroup;
 			children = (
 				EA92468C1ED6DCF900A96650 /* faceMask.png */,
-				EA92468D1ED6DCF900A96650 /* hangman.png */,
+				EAD5737F1EDC929D00D45858 /* hangman_0.png */,
+				EAD573801EDC929D00D45858 /* hangman_1.png */,
+				EAD573811EDC929D00D45858 /* hangman_2.png */,
+				EAD573821EDC929D00D45858 /* hangman_3.png */,
+				EAD573831EDC929D00D45858 /* hangman_4.png */,
+				EAD573841EDC929D00D45858 /* hangman_5.png */,
+				EAD573851EDC929D00D45858 /* hangman_6.png */,
+				EAD573861EDC929D00D45858 /* hangman_7.png */,
+				EAD573871EDC929D00D45858 /* hangman_8.png */,
+				EAD573881EDC929D00D45858 /* hangman_9.png */,
 				EA0BA11B1EDC49A10005E7D2 /* leftEye_AlmostClose.gif */,
 				EA0BA11C1EDC49A10005E7D2 /* leftEye_AlmostOpen.gif */,
 				EA0BA11D1EDC49A10005E7D2 /* leftEye_Blinking.gif */,
@@ -219,26 +246,35 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAD5738E1EDC929D00D45858 /* hangman_5.png in Resources */,
 				EA0BA1361EDC49AB0005E7D2 /* rightEye_Opening.gif in Resources */,
 				EA0BA1301EDC49AB0005E7D2 /* rightEye_AlmostClose.gif in Resources */,
 				EA0BA1251EDC49A10005E7D2 /* leftEye_Close.gif in Resources */,
 				EA0BA1311EDC49AB0005E7D2 /* rightEye_AlmostOpen.gif in Resources */,
 				EA0BA1281EDC49A10005E7D2 /* leftEye_Opening.gif in Resources */,
+				EAD573891EDC929D00D45858 /* hangman_0.png in Resources */,
 				EA12D44A1ED40B750070D1F0 /* Assets.xcassets in Resources */,
 				EA0BA1231EDC49A10005E7D2 /* leftEye_AlmostOpen.gif in Resources */,
 				EA0BA1261EDC49A10005E7D2 /* leftEye_Closing.gif in Resources */,
+				EAD573901EDC929D00D45858 /* hangman_7.png in Resources */,
 				EA0BA1321EDC49AB0005E7D2 /* rightEye_Blinking.gif in Resources */,
 				EA0BA1181EDC24A30005E7D2 /* tick.aiff in Resources */,
+				EAD573911EDC929D00D45858 /* hangman_8.png in Resources */,
 				EA0BA1241EDC49A10005E7D2 /* leftEye_Blinking.gif in Resources */,
 				EA0BA1331EDC49AB0005E7D2 /* rightEye_Close.gif in Resources */,
-				EA9246911ED6DCF900A96650 /* hangman.png in Resources */,
+				EAD5738D1EDC929D00D45858 /* hangman_4.png in Resources */,
+				EAD5738A1EDC929D00D45858 /* hangman_1.png in Resources */,
 				EA9246901ED6DCF900A96650 /* faceMask.png in Resources */,
+				EAD5738C1EDC929D00D45858 /* hangman_3.png in Resources */,
 				EA0BA1341EDC49AB0005E7D2 /* rightEye_Closing.gif in Resources */,
 				EA0BA11A1EDC270B0005E7D2 /* blink.aiff in Resources */,
 				EA0BA1351EDC49AB0005E7D2 /* rightEye_Open.gif in Resources */,
+				EAD5738F1EDC929D00D45858 /* hangman_6.png in Resources */,
 				EA0BA1221EDC49A10005E7D2 /* leftEye_AlmostClose.gif in Resources */,
+				EAD5738B1EDC929D00D45858 /* hangman_2.png in Resources */,
 				EA6557751ED9704100396736 /* Default-568h@2x.png in Resources */,
 				EA0BA1271EDC49A10005E7D2 /* leftEye_Open.gif in Resources */,
+				EAD573921EDC929D00D45858 /* hangman_9.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,11 +445,14 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = SV6W498A95;
 				INFOPLIST_FILE = FaceHangman/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacopomangiavacchi.FaceHangman;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -425,11 +464,14 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = SV6W498A95;
 				INFOPLIST_FILE = FaceHangman/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacopomangiavacchi.FaceHangman;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
