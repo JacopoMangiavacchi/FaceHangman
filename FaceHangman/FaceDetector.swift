@@ -220,7 +220,7 @@ class FaceDetector: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
                             rightEyeClosed = false
                         }
                     }
-                    if feature.rightEyeClosed && !rightEyeClosed {
+                    else if feature.rightEyeClosed && !rightEyeClosed {
                         delegateEvents.append(.rightEyeClosed)
                         rightEyeClosed = true
                         if leftEyeClosed {
