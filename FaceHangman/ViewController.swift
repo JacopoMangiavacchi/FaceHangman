@@ -269,6 +269,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                 print("found")
             case .notFound:
                 print("notFound")
+                (carousel.items[carousel.selectedIndex!] as? UILabel)?.textColor = UIColor.red
             }
 
             label.text = game!.discovered.uppercased()
@@ -297,18 +298,30 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
 extension ViewController: SwiftCarouselDelegate {
     
     func didSelectItem(item: UIView, index: Int, tapped: Bool) -> UIView? {
-        if let animal = item as? UILabel {
-            animal.textColor = greenColor
-            return animal
+        if let current = item as? UILabel {
+            
+            if game != nil && game!.lettersTried.contains(current.text!.lowercased()) {
+                current.textColor = UIColor.red
+            }
+            else {
+                current.textColor = greenColor
+            }
+            
+            return current
         }
         
         return item
     }
     
     func didDeselectItem(item: UIView, index: Int) -> UIView? {
-        if let animal = item as? UILabel {
-            animal.textColor = .white
-            return animal
+        if let current = item as? UILabel {
+            if game != nil && game!.lettersTried.contains(current.text!.lowercased()) {
+                current.textColor = UIColor.red
+            }
+            else {
+                current.textColor = UIColor.white
+            }
+            return current
         }
         
         return item
