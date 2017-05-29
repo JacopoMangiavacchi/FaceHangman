@@ -108,6 +108,8 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         temp.textColor = self.greenColor
         temp.font = UIFont(name: "HelveticaNeue-Light", size: 32.0)
         temp.textAlignment = .center
+        temp.minimumScaleFactor = 10/UIFont.labelFontSize
+        temp.adjustsFontSizeToFitWidth = true
         return temp
     }()
 
