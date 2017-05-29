@@ -61,14 +61,14 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     lazy var rightEyeGif: GIFImageView = {
         let temp = GIFImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width / 2.1, height: UIScreen.main.bounds.height / 7.1))  //150x80
         temp.alpha = 0.0
-        temp.animate(withGIFNamed: "rightEye.gif")
+        temp.animate(withGIFNamed: "rightEye_Opening.gif", loopCount: 1)
         return temp
     }()
 
     lazy var leftEyeGif: GIFImageView = {
         let temp = GIFImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width / 2.1, height: UIScreen.main.bounds.height / 7.1)) //150x80
         temp.alpha = 0.0
-        temp.animate(withGIFNamed: "leftEye.gif")
+        temp.animate(withGIFNamed: "leftEye_Opening.gif", loopCount: 1)
         return temp
     }()
 
@@ -201,6 +201,8 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     func cancel() {
         eyesStatus = .blinking
         self.label.text = ""
+        rightEyeGif.animate(withGIFNamed: "rightEye_Opening.gif", loopCount: 1)
+        leftEyeGif.animate(withGIFNamed: "leftEye_Opening.gif", loopCount: 1)
         
         timer.invalidate()
         isTimerRunning = false
@@ -231,12 +233,15 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         eyesStatus = .blinking
         SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
         self.label.text = "BLINK"
+        rightEyeGif.animate(withGIFNamed: "rightEye_Closing.gif", loopCount: 1)
+        leftEyeGif.animate(withGIFNamed: "leftEye_Closing.gif", loopCount: 1)
     }
     
     func leftWinking() {
         eyesStatus = .left
         SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
         self.label.text = "LEFT"
+        leftEyeGif.animate(withGIFNamed: "leftEye_Closing.gif", loopCount: 1)
         carousel.selectItem((carousel.selectedIndex! - 1) % 26, animated: true)
         runTimer()
     }
@@ -245,6 +250,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         eyesStatus = .right
         SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
         self.label.text = "RIGHT"
+        rightEyeGif.animate(withGIFNamed: "rightEye_Closing.gif", loopCount: 1)
         carousel.selectItem((carousel.selectedIndex! + 1) % 26, animated: true)
         runTimer()
     }
