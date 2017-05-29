@@ -43,12 +43,18 @@ class FaceDetectorFilter: FaceDetectorDelegate {
     
     func faceDetectorEvent(_ events: [FaceDetectorEvent]) {
         if events.contains(.noFaceDetected) {
+            startBlinking = nil
+            startWinking = nil
+            eyesStatus = .nothing
             DispatchQueue.main.async {
                 self.delegate.faceUnDetected()
             }
         }
         
         if events.contains(.faceDetected) {
+            startBlinking = nil
+            startWinking = nil
+            eyesStatus = .nothing
             DispatchQueue.main.async {
                 self.delegate.faceDetected()
             }
@@ -64,33 +70,40 @@ class FaceDetectorFilter: FaceDetectorDelegate {
             if events.contains(.blinking) {
                 startBlinking = CFAbsoluteTimeGetCurrent()
                 eyesStatus = .blinking
-                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(750), execute: {
-                    if self.eyesStatus == .blinking && self.startBlinking != nil && CFAbsoluteTimeGetCurrent() - self.startBlinking! > 0.7  {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300), execute: {
+                    if self.eyesStatus == .blinking && self.startBlinking != nil && CFAbsoluteTimeGetCurrent() - self.startBlinking! > 0.2  {
                         self.delegate.blinking()
                     }
                 })
             }
             else if events.contains(.notBlinking) {
+                startBlinking = nil
                 eyesStatus = .nothing
                 DispatchQueue.main.async {
                     self.delegate.cancel()
                 }
             }
             else if events.contains(.winking) {
+                startWinking = CFAbsoluteTimeGetCurrent()
                 if events.contains(.leftEyeClosed) {
                     eyesStatus = .left
-                    DispatchQueue.main.async {
-                        self.delegate.leftWinking()
-                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300), execute: {
+                        if self.eyesStatus == .left && self.startWinking != nil && CFAbsoluteTimeGetCurrent() - self.startWinking! > 0.2  {
+                            self.delegate.leftWinking()
+                        }
+                    })
                 }
                 else if events.contains(.rightEyeClosed) {
                     eyesStatus = .right
-                    DispatchQueue.main.async {
-                        self.delegate.rightWinking()
-                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300), execute: {
+                        if self.eyesStatus == .right && self.startWinking != nil && CFAbsoluteTimeGetCurrent() - self.startWinking! > 0.2  {
+                            self.delegate.rightWinking()
+                        }
+                    })
                 }
             }
             else if events.contains(.notWinking) {
+                startWinking = nil
                 eyesStatus = .nothing
                 DispatchQueue.main.async {
                     self.delegate.cancel()
@@ -100,6 +113,8 @@ class FaceDetectorFilter: FaceDetectorDelegate {
                 if  (eyesStatus == .blinking && !self.faceDetector.isBlinking) ||
                     (eyesStatus == .left && !self.faceDetector.leftEyeClosed) ||
                     (eyesStatus == .right && !self.faceDetector.rightEyeClosed) {
+                    startBlinking = nil
+                    startWinking = nil
                     eyesStatus = .nothing
                     DispatchQueue.main.async {
                         self.delegate.cancel()
