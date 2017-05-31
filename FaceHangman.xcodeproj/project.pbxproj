@@ -42,6 +42,7 @@
 		EAD573911EDC929D00D45858 /* hangman_8.png in Resources */ = {isa = PBXBuildFile; fileRef = EAD573871EDC929D00D45858 /* hangman_8.png */; };
 		EAD573921EDC929D00D45858 /* hangman_9.png in Resources */ = {isa = PBXBuildFile; fileRef = EAD573881EDC929D00D45858 /* hangman_9.png */; };
 		EAE1271A1ED77FA500F72E0A /* FaceDetectorFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE127191ED77FA500F72E0A /* FaceDetectorFilter.swift */; };
+		EAE9DBC81EDF138700416A03 /* buzzer.aiff in Resources */ = {isa = PBXBuildFile; fileRef = EAE9DBC71EDF138700416A03 /* buzzer.aiff */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,6 +84,7 @@
 		EAD573871EDC929D00D45858 /* hangman_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hangman_8.png; path = Assets/hangman/hangman_8.png; sourceTree = "<group>"; };
 		EAD573881EDC929D00D45858 /* hangman_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hangman_9.png; path = Assets/hangman/hangman_9.png; sourceTree = "<group>"; };
 		EAE127191ED77FA500F72E0A /* FaceDetectorFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceDetectorFilter.swift; sourceTree = "<group>"; };
+		EAE9DBC71EDF138700416A03 /* buzzer.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = buzzer.aiff; sourceTree = "<group>"; };
 		F8043F81F0CEB7B7024DD91C /* Pods_FaceHangman.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FaceHangman.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -121,6 +123,7 @@
 				EA6557741ED9704100396736 /* Default-568h@2x.png */,
 				EA0BA1171EDC24A30005E7D2 /* tick.aiff */,
 				EA0BA1191EDC270B0005E7D2 /* blink.aiff */,
+				EAE9DBC71EDF138700416A03 /* buzzer.aiff */,
 				EA4F614C1ED49CE700526244 /* Assets */,
 				EA12D4411ED40B750070D1F0 /* FaceHangman */,
 				EA12D4401ED40B750070D1F0 /* Products */,
@@ -249,6 +252,7 @@
 				EAD5738E1EDC929D00D45858 /* hangman_5.png in Resources */,
 				EA0BA1361EDC49AB0005E7D2 /* rightEye_Opening.gif in Resources */,
 				EA0BA1301EDC49AB0005E7D2 /* rightEye_AlmostClose.gif in Resources */,
+				EAE9DBC81EDF138700416A03 /* buzzer.aiff in Resources */,
 				EA0BA1251EDC49A10005E7D2 /* leftEye_Close.gif in Resources */,
 				EA0BA1311EDC49AB0005E7D2 /* rightEye_AlmostOpen.gif in Resources */,
 				EA0BA1281EDC49A10005E7D2 /* leftEye_Opening.gif in Resources */,

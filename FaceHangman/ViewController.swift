@@ -248,7 +248,6 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     
     func blinking() {
         eyesStatus = .blinking
-        SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
         rightEyeGif.animate(withGIFNamed: "rightEye_Closing.gif", loopCount: 1)
         leftEyeGif.animate(withGIFNamed: "leftEye_Closing.gif", loopCount: 1)
         
@@ -263,14 +262,18 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
             case .won:
                 print("won")
                 label.textColor = UIColor.white
+                SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
             case .lost:
                 print("lost")
                 label.textColor = UIColor.red
+                SystemSoundID.playFileNamed("buzzer", withExtenstion: "aiff")
             case .found:
                 print("found")
+                SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
             case .notFound:
                 print("notFound")
                 (carousel.items[carousel.selectedIndex!] as? UILabel)?.textColor = UIColor.red
+                SystemSoundID.playFileNamed("buzzer", withExtenstion: "aiff")
             }
 
             label.text = game!.discovered.uppercased()
