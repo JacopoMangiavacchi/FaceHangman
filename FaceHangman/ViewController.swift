@@ -150,7 +150,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
             if let json = response.result.value as? [[String:Any]] {
                 print(json)
                 self.game = HangmanGame(secret: json[0]["word"] as! String, maxFail: 9)
-                self.label.text = self.game?.discovered.uppercased()
+                self.label.text = self.game?.discovered.uppercased().characters.map({ c in "\(c) " }).joined()
             }
         }
     }
@@ -261,22 +261,22 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                 print("alreadyTried")
             case .won:
                 print("won")
-                label.textColor = UIColor.white
-                label.text = game!.discovered.uppercased()
+                label.textColor = greenColor
+                label.text = game!.discovered.uppercased().characters.map({ c in "\(c) " }).joined()
                 SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
             case .lost:
                 print("lost")
                 label.textColor = UIColor.red
-                label.text = game!.secret.uppercased()
+                label.text = game!.secret.uppercased().characters.map({ c in "\(c) " }).joined()
                 SystemSoundID.playFileNamed("buzzer", withExtenstion: "aiff")
             case .found:
                 print("found")
-                label.text = game!.discovered.uppercased()
+                label.text = game!.discovered.uppercased().characters.map({ c in "\(c) " }).joined()
                 SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
             case .notFound:
                 print("notFound")
                 (carousel.items[carousel.selectedIndex!] as? UILabel)?.textColor = UIColor.red
-                label.text = game!.discovered.uppercased()
+                label.text = game!.discovered.uppercased().characters.map({ c in "\(c) " }).joined()
                 SystemSoundID.playFileNamed("buzzer", withExtenstion: "aiff")
             }
 
