@@ -262,21 +262,24 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
             case .won:
                 print("won")
                 label.textColor = UIColor.white
+                label.text = game!.discovered.uppercased()
                 SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
             case .lost:
                 print("lost")
                 label.textColor = UIColor.red
+                label.text = game!.secret.uppercased()
                 SystemSoundID.playFileNamed("buzzer", withExtenstion: "aiff")
             case .found:
                 print("found")
+                label.text = game!.discovered.uppercased()
                 SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
             case .notFound:
                 print("notFound")
                 (carousel.items[carousel.selectedIndex!] as? UILabel)?.textColor = UIColor.red
+                label.text = game!.discovered.uppercased()
                 SystemSoundID.playFileNamed("buzzer", withExtenstion: "aiff")
             }
 
-            label.text = game!.discovered.uppercased()
             hangmanImage.image = UIImage(named: "hangman_\(game!.failedAttempts).png")
         }
     }
