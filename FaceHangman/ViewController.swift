@@ -220,6 +220,10 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
             DispatchQueue.main.async {
                 self.leftEyeGif.center = leftPos
                 self.rightEyeGif.center = rightPos
+                
+                //better center eyes position based on gif file
+                self.leftEyeGif.frame.origin.y -= 4
+                self.rightEyeGif.frame.origin.y -= 4
             }
         }
     }
