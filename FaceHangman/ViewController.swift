@@ -96,6 +96,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         carousel.defaultSelectedIndex = 0
         carousel.delegate = self
         carousel.scrollType = .default
+        
 
         return carousel
     }()
@@ -164,7 +165,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         text.text = string
         text.textColor = .white
         text.textAlignment = .center
-        text.font = .systemFont(ofSize: 24.0)
+        text.font = UIFont(name: "HelveticaNeue-Light", size: 28.0)
         text.numberOfLines = 0
         
         return text
@@ -299,12 +300,21 @@ extension ViewController: SwiftCarouselDelegate {
     
     func didSelectItem(item: UIView, index: Int, tapped: Bool) -> UIView? {
         if let current = item as? UILabel {
+            current.font = UIFont(name: "HelveticaNeue-Bold", size: 38.0)
             
-            if game != nil && game!.lettersTried.contains(current.text!.lowercased()) {
-                current.textColor = UIColor.red
+            if let g = game {
+                if g.discovered.contains(current.text!.lowercased()) {
+                    current.textColor = greenColor
+                }
+                else if g.lettersTried.contains(current.text!.lowercased()) {
+                    current.textColor = UIColor.red
+                }
+                else {
+                    current.textColor = UIColor.white
+                }
             }
             else {
-                current.textColor = greenColor
+                current.textColor = UIColor.white
             }
             
             return current
@@ -315,12 +325,23 @@ extension ViewController: SwiftCarouselDelegate {
     
     func didDeselectItem(item: UIView, index: Int) -> UIView? {
         if let current = item as? UILabel {
-            if game != nil && game!.lettersTried.contains(current.text!.lowercased()) {
-                current.textColor = UIColor.red
+            current.font = UIFont(name: "HelveticaNeue-Light", size: 28.0)
+
+            if let g = game {
+                if g.discovered.contains(current.text!.lowercased()) {
+                    current.textColor = greenColor
+                }
+                else if g.lettersTried.contains(current.text!.lowercased()) {
+                    current.textColor = UIColor.red
+                }
+                else {
+                    current.textColor = UIColor.white
+                }
             }
             else {
                 current.textColor = UIColor.white
             }
+
             return current
         }
         
