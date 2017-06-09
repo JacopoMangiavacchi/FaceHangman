@@ -40,5 +40,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>WordnikURL</key>
+	<string>https://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&amp;minCorpusCount=0&amp;minLength=5&amp;maxLength=15&amp;limit=1&amp;api_key=</string>
+	<key>WordnikKey</key>
+	<string>31b3a219fca1714c8200f0c4bbb0813f18b404b16bb3ee8ae</string>
 </dict>
 </plist>

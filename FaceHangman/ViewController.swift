@@ -149,14 +149,19 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         label.text = "loading ..."
         
         //Start Game
-        let APIKEY = "31b3a219fca1714c8200f0c4bbb0813f18b404b16bb3ee8ae"
-        let URL = "https://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&minCorpusCount=0&minLength=5&maxLength=15&limit=1&api_key=\(APIKEY)"
-        
-        Alamofire.request(URL).responseJSON { response in
-            if let json = response.result.value as? [[String:Any]] {
-                print(json)
-                self.game = HangmanGame(secret: json[0]["word"] as! String, maxFail: 9)
-                self.label.text = self.spaceString(self.game!.discovered)
+        if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
+            if let infoDictionary = NSDictionary(contentsOfFile: path) {
+                if let baseURL = infoDictionary.object(forKey: "WordnikURL") as? String {
+                    if let key = infoDictionary.object(forKey: "WordnikKey") as? String {
+                        Alamofire.request(baseURL + key).responseJSON { response in
+                            if let json = response.result.value as? [[String:Any]] {
+                                print(json)
+                                self.game = HangmanGame(secret: json[0]["word"] as! String, maxFail: 9)
+                                self.label.text = self.spaceString(self.game!.discovered)
+                            }
+                        }
+                    }
+                }
             }
         }
     }
