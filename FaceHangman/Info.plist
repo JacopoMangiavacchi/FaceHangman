@@ -41,7 +41,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>WordnikURL</key>
-	<string>https://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&amp;minCorpusCount=0&amp;minLength=5&amp;maxLength=15&amp;limit=1&amp;api_key=</string>
+	<string>https://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&amp;includePartOfSpeech=noun&amp;excludePartOfSpeech=proper-noun&amp;minCorpusCount=1&amp;maxCorpusCount=-1&amp;minDictionaryCount=3&amp;maxDictionaryCount=-1&amp;minLength=5&amp;maxLength=8&amp;limit=1&amp;api_key=</string>
 	<key>WordnikKey</key>
 	<string>x</string>
 </dict>

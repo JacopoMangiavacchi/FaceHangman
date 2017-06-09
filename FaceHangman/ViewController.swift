@@ -25,11 +25,9 @@ extension SystemSoundID {
 
 class ViewController: UIViewController, FaceDetectorFilterDelegate {
 
+    let numberOfLetters = 26
     let greenColor = UIColor(red: 212/255.0, green: 234/255.0, blue: 95/255.0, alpha: 1.0)
 
-    var items: [String]?
-    var itemsViews: [UILabel]?
-    
     var eyesStatus: EyesStatus = .nothing
     
     var faceDetectorFilter: FaceDetectorFilter!
@@ -83,23 +81,80 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
 //        return temp
 //    }()
 
+    var carouselCharacter: [String]!
+    
     lazy var carousel: SwiftCarousel = {
-        var carousel = SwiftCarousel(frame: CGRect(x: 0,
-                                         y: 20,
-                                         width: UIScreen.main.bounds.width,
-                                         height: UIScreen.main.bounds.height / 10))
-        self.items = (0..<26).map { String(format: "%c", 65 + $0) }
+        var carousel = SwiftCarousel()
+        self._setCarousel(carousel, index: 0)
+        self.loadCarouselCharacter()
+        self.loadCarousel(carousel)
         
-        self.itemsViews = self.items!.map { self.labelForString($0) }
-        carousel.items = self.itemsViews!
-        carousel.resizeType = .visibleItemsPerPage(5)
-        carousel.defaultSelectedIndex = 0
-        carousel.delegate = self
-        carousel.scrollType = .default
-        
-
         return carousel
     }()
+
+    func _setCarousel(_ carousel: SwiftCarousel, index: Int) {
+        carousel.frame = CGRect(x: 0,
+                                y: 20,
+                                width: UIScreen.main.bounds.width,
+                                height: UIScreen.main.bounds.height / 10)
+        carousel.resizeType = .visibleItemsPerPage(5)
+        carousel.defaultSelectedIndex = index
+        carousel.delegate = self
+        carousel.scrollType = .default
+    }
+    
+    func resetCarousel(_ letter: String) {
+        carousel.removeFromSuperview()
+
+        carousel = SwiftCarousel()
+        
+        var rightIndex = 0
+        if let index = carouselCharacter.index(of: letter) {
+            rightIndex = index
+        }
+
+        removeLetterFromCarouselCharacter(letter)
+        
+        if rightIndex >= carouselCharacter.count {
+            rightIndex = 0
+        }
+
+        _setCarousel(carousel, index: rightIndex)
+        loadCarousel(carousel)
+        
+        view.addSubview(carousel)
+    }
+    
+    func loadCarouselCharacter() {
+        carouselCharacter = (0..<numberOfLetters).map { String(format: "%c", 65 + $0) }
+    }
+    
+    func removeLetterFromCarouselCharacter(_ letter: String) {
+        if let index = carouselCharacter.index(of: letter) {
+            carouselCharacter.remove(at: index)
+        }
+    }
+
+    func loadCarousel(_ carousel: SwiftCarousel) {
+        do {
+            try carousel.itemsFactory(itemsCount: carouselCharacter.count, factory: { (item) -> UIView in
+                return self.labelForString(carouselCharacter[item])
+            })
+        }
+        catch {
+        }
+    }
+    
+    func labelForString(_ string: String) -> UILabel {
+        let text = UILabel()
+        text.text = string
+        text.textColor = .white
+        text.textAlignment = .center
+        text.font = UIFont(name: "HelveticaNeue-Light", size: 28.0)
+        text.numberOfLines = 0
+        
+        return text
+    }
 
     lazy var label: UILabel = {
         var temp = UILabel(frame: CGRect(x: 0,
@@ -168,18 +223,6 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     
     override var prefersStatusBarHidden : Bool {
         return false
-    }
-
-    
-    func labelForString(_ string: String) -> UILabel {
-        let text = UILabel()
-        text.text = string
-        text.textColor = .white
-        text.textAlignment = .center
-        text.font = UIFont(name: "HelveticaNeue-Light", size: 28.0)
-        text.numberOfLines = 0
-        
-        return text
     }
 
     
@@ -252,10 +295,10 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     func updateTimer() {
         SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
         if eyesStatus == .left {
-            carousel.selectItem((carousel.selectedIndex! - 1) % 26, animated: true)
+            carousel.selectItem((carousel.selectedIndex! - 1) % carousel.items.count, animated: true)
         }
         else if eyesStatus == .right {
-            carousel.selectItem((carousel.selectedIndex! + 1) % 26, animated: true)
+            carousel.selectItem((carousel.selectedIndex! + 1) % carousel.items.count, animated: true)
         }
 
         timer = Timer.scheduledTimer(timeInterval: 0.2, target: self,   selector: (#selector(ViewController.updateTimer)), userInfo: nil, repeats: false)
@@ -267,7 +310,11 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         leftEyeGif.animate(withGIFNamed: "leftEye_Closing.gif", loopCount: 1)
         
         if let _ = game {
-            switch game!.tryLetter(String(format: "%c", 65 + carousel.selectedIndex!)) {
+            //remove letter from carousel and reset
+            let letter = carouselCharacter[carousel.selectedIndex!]
+            resetCarousel(letter)
+            
+            switch game!.tryLetter(letter) {
             case .invalidSecret:
                 print("invalidSecret")
             case .invalidWord:
@@ -290,7 +337,6 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                 SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
             case .notFound:
                 print("notFound")
-                (carousel.items[carousel.selectedIndex!] as? UILabel)?.textColor = UIColor.red
                 label.text = spaceString(game!.discovered)
                 SystemSoundID.playFileNamed("buzzer", withExtenstion: "aiff")
             }
@@ -303,7 +349,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         eyesStatus = .left
         SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
         leftEyeGif.animate(withGIFNamed: "leftEye_Closing.gif", loopCount: 1)
-        carousel.selectItem((carousel.selectedIndex! - 1) % 26, animated: true)
+        carousel.selectItem((carousel.selectedIndex! - 1) % carousel.items.count, animated: true)
         runTimer()
     }
     
@@ -311,7 +357,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         eyesStatus = .right
         SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
         rightEyeGif.animate(withGIFNamed: "rightEye_Closing.gif", loopCount: 1)
-        carousel.selectItem((carousel.selectedIndex! + 1) % 26, animated: true)
+        carousel.selectItem((carousel.selectedIndex! + 1) % carousel.items.count, animated: true)
         runTimer()
     }
 }

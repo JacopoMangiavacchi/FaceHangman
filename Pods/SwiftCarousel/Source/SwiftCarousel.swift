@@ -201,7 +201,7 @@ open class SwiftCarousel: UIView {
     }
     
     deinit {
-        scrollView.removeObserver(self, forKeyPath: "contentOffset")
+        //scrollView.removeObserver(self, forKeyPath: "contentOffset")
     }
     
     // MARK: - Setups
