@@ -25,6 +25,7 @@ extension SystemSoundID {
 
 class ViewController: UIViewController, FaceDetectorFilterDelegate {
 
+    let removeSelectedWordFromCarousel = true
     let numberOfLetters = 26
     let greenColor = UIColor(red: 212/255.0, green: 234/255.0, blue: 95/255.0, alpha: 1.0)
 
@@ -310,9 +311,11 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         leftEyeGif.animate(withGIFNamed: "leftEye_Closing.gif", loopCount: 1)
         
         if let _ = game {
-            //remove letter from carousel and reset
             let letter = carouselCharacter[carousel.selectedIndex!]
-            resetCarousel(letter)
+
+            if removeSelectedWordFromCarousel {
+                resetCarousel(letter)
+            }
             
             switch game!.tryLetter(letter) {
             case .invalidSecret:
