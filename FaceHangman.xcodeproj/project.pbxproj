@@ -29,6 +29,8 @@
 		EA12D44A1ED40B750070D1F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA12D4491ED40B750070D1F0 /* Assets.xcassets */; };
 		EA12D4551ED40BAD0070D1F0 /* FaceDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA12D4541ED40BAD0070D1F0 /* FaceDetector.swift */; };
 		EA12D4571ED40BDC0070D1F0 /* HangmanGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA12D4561ED40BDC0070D1F0 /* HangmanGame.swift */; };
+		EA27857A1EEF0FEE00C15FDE /* lost.aiff in Resources */ = {isa = PBXBuildFile; fileRef = EA2785781EEF0FEE00C15FDE /* lost.aiff */; };
+		EA27857B1EEF0FEE00C15FDE /* won.aiff in Resources */ = {isa = PBXBuildFile; fileRef = EA2785791EEF0FEE00C15FDE /* won.aiff */; };
 		EA9246901ED6DCF900A96650 /* faceMask.png in Resources */ = {isa = PBXBuildFile; fileRef = EA92468C1ED6DCF900A96650 /* faceMask.png */; };
 		EAD02ABE1EEC6EB300AE6B73 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAD02ABD1EEC6EB300AE6B73 /* LaunchScreen.storyboard */; };
 		EAD573891EDC929D00D45858 /* hangman_0.png in Resources */ = {isa = PBXBuildFile; fileRef = EAD5737F1EDC929D00D45858 /* hangman_0.png */; };
@@ -71,6 +73,8 @@
 		EA12D44E1ED40B750070D1F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA12D4541ED40BAD0070D1F0 /* FaceDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceDetector.swift; sourceTree = "<group>"; };
 		EA12D4561ED40BDC0070D1F0 /* HangmanGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HangmanGame.swift; sourceTree = "<group>"; };
+		EA2785781EEF0FEE00C15FDE /* lost.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = lost.aiff; sourceTree = "<group>"; };
+		EA2785791EEF0FEE00C15FDE /* won.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = won.aiff; sourceTree = "<group>"; };
 		EA92468C1ED6DCF900A96650 /* faceMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = faceMask.png; path = Assets/faceMask.png; sourceTree = "<group>"; };
 		EAD02ABD1EEC6EB300AE6B73 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = FaceHangman/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EAD5737F1EDC929D00D45858 /* hangman_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hangman_0.png; path = Assets/hangman/hangman_0.png; sourceTree = "<group>"; };
@@ -124,6 +128,8 @@
 				EA0BA1171EDC24A30005E7D2 /* tick.aiff */,
 				EA0BA1191EDC270B0005E7D2 /* blink.aiff */,
 				EAE9DBC71EDF138700416A03 /* buzzer.aiff */,
+				EA2785781EEF0FEE00C15FDE /* lost.aiff */,
+				EA2785791EEF0FEE00C15FDE /* won.aiff */,
 				EA4F614C1ED49CE700526244 /* Assets */,
 				EA12D4411ED40B750070D1F0 /* FaceHangman */,
 				EA12D4401ED40B750070D1F0 /* Products */,
@@ -270,6 +276,8 @@
 				EAD5738D1EDC929D00D45858 /* hangman_4.png in Resources */,
 				EAD5738A1EDC929D00D45858 /* hangman_1.png in Resources */,
 				EA9246901ED6DCF900A96650 /* faceMask.png in Resources */,
+				EA27857B1EEF0FEE00C15FDE /* won.aiff in Resources */,
+				EA27857A1EEF0FEE00C15FDE /* lost.aiff in Resources */,
 				EAD5738C1EDC929D00D45858 /* hangman_3.png in Resources */,
 				EA0BA1341EDC49AB0005E7D2 /* rightEye_Closing.gif in Resources */,
 				EA0BA11A1EDC270B0005E7D2 /* blink.aiff in Resources */,

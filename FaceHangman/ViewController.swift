@@ -23,6 +23,14 @@ extension SystemSoundID {
     }
 }
 
+
+enum LoadSecretResult {
+    case OK(secret: String)
+    case Error(error: String)
+}
+
+
+
 class ViewController: UIViewController, FaceDetectorFilterDelegate {
 
     let removeSelectedWordFromCarousel = true
@@ -212,6 +220,8 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     var game: HangmanGame?
     var definition: String?
 
+    var errorLoading = false
+
     let firstStartTimerLength = 5.0
     var loadingTimer: Timer?
     var startTimer: Timer?
@@ -229,7 +239,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     }
     
     
-    func getSecret(startCallback:@escaping (_ secret: String) -> Void) {
+    func getSecret(callback:@escaping (_ result: LoadSecretResult) -> Void) {
         if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
             if let infoDictionary = NSDictionary(contentsOfFile: path) {
                 if let baseURL = infoDictionary.object(forKey: "WordnikSecretURL") as? String {
@@ -238,18 +248,18 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                             if response.result.isSuccess {
                                 if let json = response.result.value as? [[String:Any]] {
                                     if json.count > 0 {
-                                        startCallback(json[0]["word"] as! String)
+                                        callback(LoadSecretResult.OK(secret: json[0]["word"] as! String))
                                     }
                                     else {
-                                        print("*** JSON ARRAY IS EMPTY ***")
+                                        callback(LoadSecretResult.Error(error: "JSON ARRAY IS EMPTY"))
                                     }
                                 }
                                 else {
-                                    print("*** JSON DO NOT CONTAIN A SECRET ***")
+                                    callback(LoadSecretResult.Error(error: "JSON DO NOT CONTAIN A SECRET"))
                                 }
                             }
                             else {
-                                print("*** SECRET Request Error \(response.error) ***")
+                                callback(LoadSecretResult.Error(error: response.error.debugDescription))
                             }
                         }
                     }
@@ -318,7 +328,14 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     }
     
     
+//    enum LoadSecretResult {
+//        case OK(secret: String)
+//        case Error(error: String)
+//    }
+//    
     func startGame(timeOut: Double) {
+        errorLoading = false
+        
         gameLoading = true
         gameEnding = false
         showHelp()
@@ -329,17 +346,24 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         loadingTimer = Timer.scheduledTimer(timeInterval: timeOut, target: self,   selector: (#selector(ViewController.loadingTimeout)), userInfo: nil, repeats: false)
 
         //Start Game
-        getSecret { (secret) in
-            self.game = HangmanGame(secret: secret, maxFail: 9)
-            self.getDefinition()
-
-            let differentTime = CFAbsoluteTimeGetCurrent() - self.startingGameTime!
-            
-            if differentTime > timeOut  {
-                self.reallyStartGame()
-            }
-            else  {
-                self.startTimer = Timer.scheduledTimer(timeInterval: timeOut - differentTime, target: self,   selector: (#selector(ViewController.reallyStartGame)), userInfo: nil, repeats: false)
+        getSecret { (result) in
+            switch result {
+            case .OK(let secret):
+                self.game = HangmanGame(secret: secret, maxFail: 9)
+                self.getDefinition()
+                
+                let differentTime = CFAbsoluteTimeGetCurrent() - self.startingGameTime!
+                
+                if differentTime > timeOut  {
+                    self.reallyStartGame()
+                }
+                else  {
+                    self.startTimer = Timer.scheduledTimer(timeInterval: timeOut - differentTime, target: self,   selector: (#selector(ViewController.reallyStartGame)), userInfo: nil, repeats: false)
+                }
+            case .Error(let error):
+                print("*** \(error) ***")
+                self.secretLabel.text = "Network Error"
+                self.errorLoading = true
             }
         }
     }
@@ -370,7 +394,13 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         
         if gameLoading {
             hideHelp()
-            secretLabel.text = "loading ..."
+            
+            if errorLoading {
+                secretLabel.text = "Blink both Eyes for retry"
+            }
+            else {
+                secretLabel.text = "loading ..."
+            }
         }
     }
 
@@ -470,6 +500,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         }
     }
     
+    
     override var prefersStatusBarHidden : Bool {
         return false
     }
@@ -563,14 +594,14 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                     print("won")
                     secretLabel.textColor = greenColor
                     secretLabel.text = spaceString(game!.discovered)
-                    SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
+                    SystemSoundID.playFileNamed("won", withExtenstion: "aiff")
                     restartNewGame(timeOut: endingTimerLength, won: true)
                 case .lost:
                     print("lost")
                     secretLabel.textColor = UIColor.red
                     definitionLabel.textColor = UIColor.red
                     secretLabel.text = spaceString(game!.secret)
-                    SystemSoundID.playFileNamed("buzzer", withExtenstion: "aiff")
+                    SystemSoundID.playFileNamed("lost", withExtenstion: "aiff")
                     restartNewGame(timeOut: endingTimerLength, won: false)
                 case .found:
                     print("found")
