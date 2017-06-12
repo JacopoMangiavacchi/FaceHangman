@@ -195,7 +195,13 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     
     var game: HangmanGame?
     var definition: String?
-    
+
+    let startTimerLength = 5.0
+    var loadingTimer: Timer?
+    var startTimer: Timer?
+    var startingGameTime: CFAbsoluteTime?
+    var gameLoading = true
+
     
     internal func spaceString(_ string: String) -> String {
         return string.uppercased().characters.map({ c in "\(c) " }).joined()
@@ -203,8 +209,6 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     
     
     func getSecret(startCallback:@escaping (_ secret: String) -> Void) {
-        secretLabel.text = "loading ..."
-        
         if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
             if let infoDictionary = NSDictionary(contentsOfFile: path) {
                 if let baseURL = infoDictionary.object(forKey: "WordnikSecretURL") as? String {
@@ -233,7 +237,9 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                                 if let json = response.result.value as? [[String:Any]] {
                                     if json.count > 0 {
                                         self.definition = json[0]["text"] as? String
-                                        self.definitionLabel.text = self.definition
+                                        if !self.gameLoading {
+                                            self.definitionLabel.text = self.definition
+                                        }
                                     }
                                 }
                             }
@@ -243,7 +249,78 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
             }
         }
     }
+    
 
+    func showHelp() {
+        secretLabel.text = "help !!!"
+        carousel.isHidden = true
+    }
+    
+    func hideHelp() {
+        carousel.isHidden = false
+    }
+    
+    
+    func startNewGame() {
+        gameLoading = true
+        showHelp()
+        startingGameTime = CFAbsoluteTimeGetCurrent()
+        
+        loadingTimer = Timer.scheduledTimer(timeInterval: startTimerLength, target: self,   selector: (#selector(ViewController.loadingTimeout)), userInfo: nil, repeats: false)
+
+        //Start Game
+        getSecret { (secret) in
+            self.game = HangmanGame(secret: secret, maxFail: 9)
+            self.getDefinition()
+
+            let differentTime = CFAbsoluteTimeGetCurrent() - self.startingGameTime!
+            
+            if differentTime > self.startTimerLength  {
+                self.reallyStartGame()
+            }
+            else  {
+                self.startTimer = Timer.scheduledTimer(timeInterval: self.startTimerLength - differentTime, target: self,   selector: (#selector(ViewController.reallyStartGame)), userInfo: nil, repeats: false)
+            }
+        }
+    }
+    
+    
+    func loadingTimeout() {
+        loadingTimer?.invalidate()
+        loadingTimer = nil
+        
+        if gameLoading {
+            hideHelp()
+            secretLabel.text = "loading ..."
+        }
+    }
+    
+
+    func reallyStartGame() {
+        loadingTimer?.invalidate()
+        loadingTimer = nil
+        
+        startTimer?.invalidate()
+        startTimer = nil
+        
+        gameLoading = false
+        
+        hideHelp()
+        
+        self.secretLabel.text = self.spaceString(self.game!.discovered)
+        self.definitionLabel.text = self.definition
+        self.carousel.selectItem(0, animated: true)
+        saveGame()
+    }
+
+    func saveGame() {
+        do {
+            UserDefaults.standard.setValue(try self.game?.save(), forKey: "LastSavedGame")
+            UserDefaults.standard.setValue(definition, forKey: "LastDefinition")
+        }
+        catch {
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -266,12 +343,40 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         view.addSubview(definitionLabel)
         view.addSubview(carousel)
         
-        //Start Game
-        getSecret { (secret) in
-            self.game = HangmanGame(secret: secret, maxFail: 9)
-            self.secretLabel.text = self.spaceString(self.game!.discovered)
-            self.getDefinition()
-            self.carousel.selectItem(0, animated: true)
+        if let lastSavedGame = UserDefaults.standard.value(forKey: "LastSavedGame") as? String {
+            do {
+                self.game = HangmanGame()
+                if try self.game?.load(lastSavedGame) == .ok {
+                    self.secretLabel.text = self.spaceString(self.game!.discovered)
+                    
+                    self.carousel.selectItem(0, animated: true)
+                    hangmanImage.image = UIImage(named: "hangman_\(game!.failedAttempts).png")
+                    for c in game!.lettersTried.characters {
+                        let letter = String(c).uppercased()
+                        resetCarousel(letter)
+                    }
+                    self.carousel.selectItem(0, animated: true)
+                    
+                    if let definition = UserDefaults.standard.value(forKey: "LastDefinition") as? String {
+                        self.definitionLabel.text = definition
+                        self.definition = definition
+                    }
+                    
+                    saveGame()
+                    gameLoading = false
+                }
+                else {
+                    self.game = nil
+                    startNewGame()
+                }
+            }
+            catch {
+                self.game = nil
+                startNewGame()
+            }
+        }
+        else {
+            startNewGame()
         }
     }
     
@@ -345,62 +450,70 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     }
     
     func blinking() {
-        eyesStatus = .blinking
-        rightEyeGif.animate(withGIFNamed: "rightEye_Closing.gif", loopCount: 1)
-        leftEyeGif.animate(withGIFNamed: "leftEye_Closing.gif", loopCount: 1)
-        
-        if let _ = game {
-            let letter = carouselCharacter[carousel.selectedIndex!]
-
-            if removeSelectedWordFromCarousel {
-                resetCarousel(letter)
-            }
+        if !gameLoading {
+            eyesStatus = .blinking
+            rightEyeGif.animate(withGIFNamed: "rightEye_Closing.gif", loopCount: 1)
+            leftEyeGif.animate(withGIFNamed: "leftEye_Closing.gif", loopCount: 1)
             
-            switch game!.tryLetter(letter) {
-            case .invalidSecret:
-                print("invalidSecret")
-            case .invalidWord:
-                print("invalidWord")
-            case .alreadyTried:
-                print("alreadyTried")
-            case .won:
-                print("won")
-                secretLabel.textColor = greenColor
-                secretLabel.text = spaceString(game!.discovered)
-                SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
-            case .lost:
-                print("lost")
-                secretLabel.textColor = UIColor.red
-                secretLabel.text = spaceString(game!.secret)
-                SystemSoundID.playFileNamed("buzzer", withExtenstion: "aiff")
-            case .found:
-                print("found")
-                secretLabel.text = spaceString(game!.discovered)
-                SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
-            case .notFound:
-                print("notFound")
-                secretLabel.text = spaceString(game!.discovered)
-                SystemSoundID.playFileNamed("buzzer", withExtenstion: "aiff")
+            if let _ = game {
+                let letter = carouselCharacter[carousel.selectedIndex!]
+                
+                if removeSelectedWordFromCarousel {
+                    resetCarousel(letter)
+                }
+                
+                switch game!.tryLetter(letter) {
+                case .invalidSecret:
+                    print("invalidSecret")
+                case .invalidWord:
+                    print("invalidWord")
+                case .alreadyTried:
+                    print("alreadyTried")
+                case .won:
+                    print("won")
+                    secretLabel.textColor = greenColor
+                    secretLabel.text = spaceString(game!.discovered)
+                    SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
+                case .lost:
+                    print("lost")
+                    secretLabel.textColor = UIColor.red
+                    secretLabel.text = spaceString(game!.secret)
+                    SystemSoundID.playFileNamed("buzzer", withExtenstion: "aiff")
+                case .found:
+                    print("found")
+                    secretLabel.text = spaceString(game!.discovered)
+                    SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
+                case .notFound:
+                    print("notFound")
+                    secretLabel.text = spaceString(game!.discovered)
+                    SystemSoundID.playFileNamed("buzzer", withExtenstion: "aiff")
+                }
+                
+                hangmanImage.image = UIImage(named: "hangman_\(game!.failedAttempts).png")
+                
+                saveGame()
             }
-
-            hangmanImage.image = UIImage(named: "hangman_\(game!.failedAttempts).png")
         }
     }
     
     func leftWinking() {
-        eyesStatus = .left
-        SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
-        leftEyeGif.animate(withGIFNamed: "leftEye_Closing.gif", loopCount: 1)
-        carousel.selectItem((carousel.selectedIndex! - 1) % carousel.items.count, animated: true)
-        runWinkerTimer()
+        if !gameLoading {
+            eyesStatus = .left
+            SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
+            leftEyeGif.animate(withGIFNamed: "leftEye_Closing.gif", loopCount: 1)
+            carousel.selectItem((carousel.selectedIndex! - 1) % carousel.items.count, animated: true)
+            runWinkerTimer()
+        }
     }
     
     func rightWinking() {
-        eyesStatus = .right
-        SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
-        rightEyeGif.animate(withGIFNamed: "rightEye_Closing.gif", loopCount: 1)
-        carousel.selectItem((carousel.selectedIndex! + 1) % carousel.items.count, animated: true)
-        runWinkerTimer()
+        if !gameLoading {
+            eyesStatus = .right
+            SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
+            rightEyeGif.animate(withGIFNamed: "rightEye_Closing.gif", loopCount: 1)
+            carousel.selectItem((carousel.selectedIndex! + 1) % carousel.items.count, animated: true)
+            runWinkerTimer()
+        }
     }
 }
 
