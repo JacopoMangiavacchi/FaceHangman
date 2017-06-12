@@ -27,7 +27,18 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
 
     let removeSelectedWordFromCarousel = true
     let numberOfLetters = 26
+    let carouselSelectedFontSize:CGFloat = 32.0
+    let carouselUnselectedFontSize:CGFloat = 28.0
     let greenColor = UIColor(red: 212/255.0, green: 234/255.0, blue: 95/255.0, alpha: 1.0)
+    
+    
+    let topHeight:CGFloat = UIScreen.main.bounds.height / 4
+    let statusBarHeight:CGFloat = 10
+    let definitionHeight:CGFloat = 60
+//    let carouselHeight:CGFloat = ((UIScreen.main.bounds.height / 4) - 20 - 40) / 2
+//    let secretHeight:CGFloat = ((UIScreen.main.bounds.height / 4) - 20 - 40) / 2
+    func carouselHeight() -> CGFloat { return (topHeight - statusBarHeight - definitionHeight) / 2 }
+    func secretHeight() -> CGFloat { return (topHeight - statusBarHeight - definitionHeight) / 2 }
 
     var eyesStatus: EyesStatus = .nothing
     
@@ -45,6 +56,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                                              width: UIScreen.main.bounds.width,
                                              height: UIScreen.main.bounds.height))
         temp.image = UIImage(named: "hangman_0.png")
+        temp.contentMode = .scaleAspectFit
         return temp
     }()
 
@@ -54,6 +66,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                                              width: UIScreen.main.bounds.width,
                                              height: UIScreen.main.bounds.height))
         temp.image = UIImage(named: "faceMask.png")
+        temp.contentMode = .scaleAspectFit
         temp.alpha = 0.6
         return temp
     }()
@@ -62,6 +75,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         let temp = GIFImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width / 2.1, height: UIScreen.main.bounds.height / 7.1))  //150x80
         temp.alpha = 0.0
         temp.animate(withGIFNamed: "rightEye_Opening.gif", loopCount: 1)
+        temp.contentMode = .scaleAspectFit
         return temp
     }()
 
@@ -69,18 +83,9 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         let temp = GIFImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width / 2.1, height: UIScreen.main.bounds.height / 7.1)) //150x80
         temp.alpha = 0.0
         temp.animate(withGIFNamed: "leftEye_Opening.gif", loopCount: 1)
+        temp.contentMode = .scaleAspectFit
         return temp
     }()
-
-//    lazy var faceRect: UIView = {
-//        var temp = UIView(frame: CGRect(x: 0,
-//                                             y: 0,
-//                                             width: UIScreen.main.bounds.width,
-//                                             height: UIScreen.main.bounds.height))
-//        temp.backgroundColor = UIColor.orange
-//        temp.alpha = 0.4
-//        return temp
-//    }()
 
     var carouselCharacter: [String]!
     
@@ -97,11 +102,12 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         carousel.frame = CGRect(x: 0,
                                 y: 20,
                                 width: UIScreen.main.bounds.width,
-                                height: UIScreen.main.bounds.height / 10)
+                                height: carouselHeight())
         carousel.resizeType = .visibleItemsPerPage(5)
         carousel.defaultSelectedIndex = index
         carousel.delegate = self
         carousel.scrollType = .default
+        carousel.isUserInteractionEnabled = false
     }
     
     func resetCarousel(_ letter: String) {
@@ -139,39 +145,53 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     func loadCarousel(_ carousel: SwiftCarousel) {
         do {
             try carousel.itemsFactory(itemsCount: carouselCharacter.count, factory: { (item) -> UIView in
-                return self.labelForString(carouselCharacter[item])
+                return self.labelForCarouselString(carouselCharacter[item])
             })
         }
         catch {
         }
     }
     
-    func labelForString(_ string: String) -> UILabel {
+    func labelForCarouselString(_ string: String) -> UILabel {
         let text = UILabel()
         text.text = string
         text.textColor = .white
         text.textAlignment = .center
-        text.font = UIFont(name: "HelveticaNeue-Light", size: 28.0)
+        text.font = UIFont(name: "HelveticaNeue-Light", size: carouselUnselectedFontSize)
         text.numberOfLines = 0
         
         return text
     }
 
-    lazy var label: UILabel = {
+    lazy var secretLabel: UILabel = {
         var temp = UILabel(frame: CGRect(x: 0,
-                                             y: 20 + UIScreen.main.bounds.height / 10,
+                                             y: self.carousel.frame.origin.y + self.carousel.bounds.height,
                                              width: UIScreen.main.bounds.width,
-                                             height: UIScreen.main.bounds.height / 10))
+                                             height: self.secretHeight()))
         temp.textColor = self.greenColor
-        temp.font = UIFont(name: "HelveticaNeue-Light", size: 32.0)
+        temp.font = UIFont(name: "HelveticaNeue-Light", size: self.carouselSelectedFontSize)
         temp.textAlignment = .center
         temp.minimumScaleFactor = 10/UIFont.labelFontSize
         temp.adjustsFontSizeToFitWidth = true
         return temp
     }()
 
-    var timer = Timer()
-    var isTimerRunning = false
+    lazy var definitionLabel: UILabel = {
+        var temp = UILabel(frame: CGRect(x: 0,
+                                         y: self.secretLabel.frame.origin.y + self.secretLabel.bounds.height,
+                                         width: UIScreen.main.bounds.width,
+                                         height: self.definitionHeight))
+        temp.textColor = self.greenColor
+        temp.font = UIFont(name: "HelveticaNeue-Light", size: 20)
+        temp.textAlignment = .center
+        
+        temp.minimumScaleFactor = 10/UIFont.labelFontSize
+        temp.adjustsFontSizeToFitWidth = true
+        return temp
+    }()
+    
+    var winkingTimer = Timer()
+    var isWinkingTimerRunning = false
     
     var game: HangmanGame?
     var definition: String?
@@ -183,6 +203,8 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     
     
     func getSecret(startCallback:@escaping (_ secret: String) -> Void) {
+        secretLabel.text = "loading ..."
+        
         if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
             if let infoDictionary = NSDictionary(contentsOfFile: path) {
                 if let baseURL = infoDictionary.object(forKey: "WordnikSecretURL") as? String {
@@ -211,6 +233,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                                 if let json = response.result.value as? [[String:Any]] {
                                     if json.count > 0 {
                                         self.definition = json[0]["text"] as? String
+                                        self.definitionLabel.text = self.definition
                                     }
                                 }
                             }
@@ -239,18 +262,16 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         view.addSubview(hangmanImage)
         view.addSubview(leftEyeGif)
         view.addSubview(rightEyeGif)
-        view.addSubview(label)
+        view.addSubview(secretLabel)
+        view.addSubview(definitionLabel)
         view.addSubview(carousel)
-//        self.view.addSubview(faceRect)
         
-        label.text = "loading ..."
-        
-
         //Start Game
         getSecret { (secret) in
             self.game = HangmanGame(secret: secret, maxFail: 9)
-            self.label.text = self.spaceString(self.game!.discovered)
+            self.secretLabel.text = self.spaceString(self.game!.discovered)
             self.getDefinition()
+            self.carousel.selectItem(0, animated: true)
         }
     }
     
@@ -261,10 +282,6 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     
     //MARK: FaceDetectorFilter Delegate
     func faceDetected() {
-//        UIView.animate(withDuration: 0.5, animations: {
-//            self.faceRect.alpha = 0.5
-//        })
-        
         cancel()
         
         DispatchQueue.main.async {
@@ -276,10 +293,6 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     }
     
     func faceUnDetected() {
-//        UIView.animate(withDuration: 0.3, animations: {
-//            self.faceRect.alpha = 0
-//        })
-        
         cancel()
         
         DispatchQueue.main.async {
@@ -291,12 +304,6 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     }
     
     func faceEyePosition(left: CGPoint, right: CGPoint) {
-//        if let bounds = self.faceDetector.faceBounds, self.faceDetector.faceDetected {
-//            DispatchQueue.main.async {
-//                self.faceRect.frame = bounds
-//            }
-//        }
-        
         if let leftPos = self.faceDetector.leftEyePosition, let rightPos = self.faceDetector.rightEyePosition {
             DispatchQueue.main.async {
                 self.leftEyeGif.center = leftPos
@@ -314,18 +321,18 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         rightEyeGif.animate(withGIFNamed: "rightEye_Opening.gif", loopCount: 1)
         leftEyeGif.animate(withGIFNamed: "leftEye_Opening.gif", loopCount: 1)
         
-        timer.invalidate()
-        isTimerRunning = false
+        winkingTimer.invalidate()
+        isWinkingTimerRunning = false
     }
     
-    func runTimer() {
-        if !isTimerRunning {
-            isTimerRunning = true
-            timer = Timer.scheduledTimer(timeInterval: 0.7, target: self,   selector: (#selector(ViewController.updateTimer)), userInfo: nil, repeats: false)
+    func runWinkerTimer() {
+        if !isWinkingTimerRunning {
+            isWinkingTimerRunning = true
+            winkingTimer = Timer.scheduledTimer(timeInterval: 0.7, target: self,   selector: (#selector(ViewController.updateWinkerTimer)), userInfo: nil, repeats: false)
         }
     }
     
-    func updateTimer() {
+    func updateWinkerTimer() {
         SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
         if eyesStatus == .left {
             carousel.selectItem((carousel.selectedIndex! - 1) % carousel.items.count, animated: true)
@@ -334,7 +341,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
             carousel.selectItem((carousel.selectedIndex! + 1) % carousel.items.count, animated: true)
         }
 
-        timer = Timer.scheduledTimer(timeInterval: 0.2, target: self,   selector: (#selector(ViewController.updateTimer)), userInfo: nil, repeats: false)
+        winkingTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self,   selector: (#selector(ViewController.updateWinkerTimer)), userInfo: nil, repeats: false)
     }
     
     func blinking() {
@@ -358,21 +365,21 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                 print("alreadyTried")
             case .won:
                 print("won")
-                label.textColor = greenColor
-                label.text = spaceString(game!.discovered)
+                secretLabel.textColor = greenColor
+                secretLabel.text = spaceString(game!.discovered)
                 SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
             case .lost:
                 print("lost")
-                label.textColor = UIColor.red
-                label.text = spaceString(game!.secret)
+                secretLabel.textColor = UIColor.red
+                secretLabel.text = spaceString(game!.secret)
                 SystemSoundID.playFileNamed("buzzer", withExtenstion: "aiff")
             case .found:
                 print("found")
-                label.text = spaceString(game!.discovered)
+                secretLabel.text = spaceString(game!.discovered)
                 SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
             case .notFound:
                 print("notFound")
-                label.text = spaceString(game!.discovered)
+                secretLabel.text = spaceString(game!.discovered)
                 SystemSoundID.playFileNamed("buzzer", withExtenstion: "aiff")
             }
 
@@ -385,7 +392,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
         leftEyeGif.animate(withGIFNamed: "leftEye_Closing.gif", loopCount: 1)
         carousel.selectItem((carousel.selectedIndex! - 1) % carousel.items.count, animated: true)
-        runTimer()
+        runWinkerTimer()
     }
     
     func rightWinking() {
@@ -393,7 +400,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
         rightEyeGif.animate(withGIFNamed: "rightEye_Closing.gif", loopCount: 1)
         carousel.selectItem((carousel.selectedIndex! + 1) % carousel.items.count, animated: true)
-        runTimer()
+        runWinkerTimer()
     }
 }
 
@@ -427,7 +434,7 @@ extension ViewController: SwiftCarouselDelegate {
     
     func didDeselectItem(item: UIView, index: Int) -> UIView? {
         if let current = item as? UILabel {
-            current.font = UIFont(name: "HelveticaNeue-Light", size: 28.0)
+            current.font = UIFont(name: "HelveticaNeue-Light", size: carouselUnselectedFontSize)
 
             if let g = game {
                 if g.discovered.contains(current.text!.lowercased()) {

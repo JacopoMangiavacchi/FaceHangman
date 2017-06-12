@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -19,39 +20,48 @@
                         <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hangman_0.png" translatesAutoresizingMaskIntoConstraints="NO" id="Hbf-z0-U3e">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hangman_0.png" translatesAutoresizingMaskIntoConstraints="NO" id="Hbf-z0-U3e">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Copyright © 2017 Jacopo. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="obG-Y5-kRd">
-                                <rect key="frame" x="20" y="647" width="335" height="21"/>
+                                <rect key="frame" x="20" y="716" width="374" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.83021384480000004" green="0.91629344219999997" blue="0.37430813909999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FaceHangman" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="GJd-Yh-RWb">
-                                <rect key="frame" x="20" y="54" width="335" height="43"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
-                                <color key="textColor" red="0.83021384480000004" green="0.91629344219999997" blue="0.37430813909999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ls3-7h-rkY">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="184"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Face Hangman" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="GJd-Yh-RWb">
+                                        <rect key="frame" x="65.666666666666686" y="68.666666666666671" width="283" height="48"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="40"/>
+                                        <color key="textColor" red="0.83021384480000004" green="0.91629344219999997" blue="0.37430813909999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerX" secondItem="Ls3-7h-rkY" secondAttribute="centerX" id="NV8-Y0-BV3"/>
+                                    <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerY" secondItem="Ls3-7h-rkY" secondAttribute="centerY" id="a26-15-Ter"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.29800295829772949" green="0.29806005954742432" blue="0.29799938201904297" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="obG-Y5-kRd" firstAttribute="leading" secondItem="GJd-Yh-RWb" secondAttribute="leading" id="2Qc-kJ-J9D"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="GJd-Yh-RWb" secondAttribute="trailing" constant="4" id="GB8-Dq-Sca"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="4" id="IHE-vv-VMX"/>
+                            <constraint firstItem="Ls3-7h-rkY" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="82P-1h-b71"/>
+                            <constraint firstAttribute="trailing" secondItem="Ls3-7h-rkY" secondAttribute="trailing" id="Jeu-GO-XbJ"/>
                             <constraint firstAttribute="trailing" secondItem="obG-Y5-kRd" secondAttribute="trailing" constant="20" id="K5q-2p-LGA"/>
                             <constraint firstItem="Hbf-z0-U3e" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="Nn8-kR-nAk"/>
                             <constraint firstAttribute="trailing" secondItem="Hbf-z0-U3e" secondAttribute="trailing" id="WFT-kB-0ce"/>
                             <constraint firstItem="obG-Y5-kRd" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="20" id="YXK-pH-Dvx"/>
-                            <constraint firstItem="obG-Y5-kRd" firstAttribute="trailing" secondItem="GJd-Yh-RWb" secondAttribute="trailing" id="gN1-aM-KQG"/>
+                            <constraint firstItem="Ls3-7h-rkY" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="d4Y-YE-CZW"/>
                             <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="Hbf-z0-U3e" secondAttribute="bottom" id="gsO-yG-Y0q"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="34" id="kIg-Ti-ukZ"/>
                             <constraint firstItem="Hbf-z0-U3e" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="rhF-7k-nop"/>
                             <constraint firstAttribute="bottomMargin" secondItem="obG-Y5-kRd" secondAttribute="bottom" constant="-1" id="ur1-uG-cvy"/>
+                            <constraint firstItem="Ls3-7h-rkY" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" multiplier="1/4" id="z8P-zJ-d1v"/>
                         </constraints>
                     </view>
                 </viewController>
