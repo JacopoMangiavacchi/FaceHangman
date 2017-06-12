@@ -572,6 +572,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     
     func blinking() {
         if errorLoading {
+            SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
             startGame(timeOut: restartTimerLength)
         }
         else if !gameLoading && !gameEnding {
