@@ -110,17 +110,19 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         carousel.isUserInteractionEnabled = false
     }
     
-    func resetCarousel(_ letter: String) {
+    func resetCarousel(_ letter: String?) {
         carousel.removeFromSuperview()
 
         carousel = SwiftCarousel()
         
         var rightIndex = 0
-        if let index = carouselCharacter.index(of: letter) {
-            rightIndex = index
+        if let l = letter {
+            if let index = carouselCharacter.index(of: l) {
+                rightIndex = index
+            }
+            
+            removeLetterFromCarouselCharacter(l)
         }
-
-        removeLetterFromCarouselCharacter(letter)
         
         if rightIndex >= carouselCharacter.count {
             rightIndex = 0
@@ -135,6 +137,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     func loadCarouselCharacter() {
         carouselCharacter = (0..<numberOfLetters).map { String(format: "%c", 65 + $0) }
     }
+    
     
     func removeLetterFromCarouselCharacter(_ letter: String) {
         if let index = carouselCharacter.index(of: letter) {
@@ -162,6 +165,19 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         
         return text
     }
+    
+    
+    lazy var wonLostMessageLabel: UILabel = {
+        var temp = UILabel(frame: self.carousel.frame)
+        temp.textColor = self.greenColor
+        temp.font = UIFont(name: "HelveticaNeue-Light", size: self.carouselSelectedFontSize)
+        temp.textAlignment = .center
+        temp.minimumScaleFactor = 10/UIFont.labelFontSize
+        temp.adjustsFontSizeToFitWidth = true
+        temp.isHidden = true
+        return temp
+    }()
+
 
     lazy var secretLabel: UILabel = {
         var temp = UILabel(frame: CGRect(x: 0,
@@ -196,13 +212,18 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     var game: HangmanGame?
     var definition: String?
 
-    let startTimerLength = 5.0
+    let firstStartTimerLength = 5.0
     var loadingTimer: Timer?
     var startTimer: Timer?
     var startingGameTime: CFAbsoluteTime?
     var gameLoading = true
 
-    
+    let endingTimerLength = 8.0
+    let restartTimerLength = 2.0
+    var endingTimer: Timer?
+    var gameEnding = false
+
+
     internal func spaceString(_ string: String) -> String {
         return string.uppercased().characters.map({ c in "\(c) " }).joined()
     }
@@ -214,10 +235,21 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                 if let baseURL = infoDictionary.object(forKey: "WordnikSecretURL") as? String {
                     if let key = infoDictionary.object(forKey: "WordnikKey") as? String {
                         Alamofire.request(String(format: baseURL, key)).responseJSON { response in
-                            if let json = response.result.value as? [[String:Any]] {
-                                if json.count > 0 {
-                                    startCallback(json[0]["word"] as! String)
+                            if response.result.isSuccess {
+                                if let json = response.result.value as? [[String:Any]] {
+                                    if json.count > 0 {
+                                        startCallback(json[0]["word"] as! String)
+                                    }
+                                    else {
+                                        print("*** JSON ARRAY IS EMPTY ***")
+                                    }
                                 }
+                                else {
+                                    print("*** JSON DO NOT CONTAIN A SECRET ***")
+                                }
+                            }
+                            else {
+                                print("*** SECRET Request Error \(response.error) ***")
                             }
                         }
                     }
@@ -234,13 +266,24 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                     if let key = infoDictionary.object(forKey: "WordnikKey") as? String {
                         if let secret = self.game?.secret {
                             Alamofire.request(String(format: baseURL, secret, key)).responseJSON { response in
-                                if let json = response.result.value as? [[String:Any]] {
-                                    if json.count > 0 {
-                                        self.definition = json[0]["text"] as? String
-                                        if !self.gameLoading {
-                                            self.definitionLabel.text = self.definition
+                                if response.result.isSuccess {
+                                    if let json = response.result.value as? [[String:Any]] {
+                                        if json.count > 0 {
+                                            self.definition = json[0]["text"] as? String
+                                            if !self.gameLoading {
+                                                self.definitionLabel.text = self.definition
+                                            }
+                                        }
+                                        else {
+                                            print("--- JSON ARRAY IS EMPTY ---")
                                         }
                                     }
+                                    else {
+                                        print("--- Warning JSON do not contain definition ---")
+                                    }
+                                }
+                                else {
+                                    print("--- SECRET Request Error \(response.error) ---")
                                 }
                             }
                         }
@@ -252,21 +295,38 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     
 
     func showHelp() {
+        wonLostMessageLabel.isHidden = true
+
+        secretLabel.textColor = greenColor
+        definitionLabel.textColor = greenColor
+        
+        definitionLabel.text = ""
         secretLabel.text = "help !!!"
-        carousel.isHidden = true
+        carousel.removeFromSuperview()
     }
     
     func hideHelp() {
+        secretLabel.textColor = greenColor
+        definitionLabel.textColor = greenColor
+
+        definitionLabel.text = ""
+        secretLabel.text = ""
         carousel.isHidden = false
+        
+        loadCarouselCharacter()
+        resetCarousel(nil)
     }
     
     
-    func startNewGame() {
+    func startGame(timeOut: Double) {
         gameLoading = true
+        gameEnding = false
         showHelp()
         startingGameTime = CFAbsoluteTimeGetCurrent()
         
-        loadingTimer = Timer.scheduledTimer(timeInterval: startTimerLength, target: self,   selector: (#selector(ViewController.loadingTimeout)), userInfo: nil, repeats: false)
+        hangmanImage.image = UIImage(named: "hangman_0.png")
+
+        loadingTimer = Timer.scheduledTimer(timeInterval: timeOut, target: self,   selector: (#selector(ViewController.loadingTimeout)), userInfo: nil, repeats: false)
 
         //Start Game
         getSecret { (secret) in
@@ -275,13 +335,32 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
 
             let differentTime = CFAbsoluteTimeGetCurrent() - self.startingGameTime!
             
-            if differentTime > self.startTimerLength  {
+            if differentTime > timeOut  {
                 self.reallyStartGame()
             }
             else  {
-                self.startTimer = Timer.scheduledTimer(timeInterval: self.startTimerLength - differentTime, target: self,   selector: (#selector(ViewController.reallyStartGame)), userInfo: nil, repeats: false)
+                self.startTimer = Timer.scheduledTimer(timeInterval: timeOut - differentTime, target: self,   selector: (#selector(ViewController.reallyStartGame)), userInfo: nil, repeats: false)
             }
         }
+    }
+    
+    
+    func restartNewGame(timeOut: Double, won: Bool) {
+        definitionLabel.text = "A new game will start in few seconds"
+        
+        wonLostMessageLabel.isHidden = false
+        if won {
+            wonLostMessageLabel.text = "😃 You Won!"
+            wonLostMessageLabel.textColor = greenColor
+        }
+        else {
+            wonLostMessageLabel.text = "😞 You Lost!"
+            wonLostMessageLabel.textColor = .red
+        }
+        
+        carousel.removeFromSuperview()
+        gameEnding = true
+        endingTimer = Timer.scheduledTimer(timeInterval: timeOut, target: self,   selector: (#selector(ViewController.endingTimeout)), userInfo: nil, repeats: false)
     }
     
     
@@ -294,7 +373,15 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
             secretLabel.text = "loading ..."
         }
     }
+
     
+    func endingTimeout() {
+        endingTimer?.invalidate()
+        endingTimer = nil
+
+        startGame(timeOut: restartTimerLength)
+    }
+
 
     func reallyStartGame() {
         loadingTimer?.invalidate()
@@ -304,6 +391,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         startTimer = nil
         
         gameLoading = false
+        gameEnding = false
         
         hideHelp()
         
@@ -342,6 +430,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         view.addSubview(secretLabel)
         view.addSubview(definitionLabel)
         view.addSubview(carousel)
+        view.addSubview(wonLostMessageLabel)
         
         if let lastSavedGame = UserDefaults.standard.value(forKey: "LastSavedGame") as? String {
             do {
@@ -364,19 +453,20 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                     
                     saveGame()
                     gameLoading = false
+                    gameEnding = false
                 }
                 else {
                     self.game = nil
-                    startNewGame()
+                    startGame(timeOut: firstStartTimerLength)
                 }
             }
             catch {
                 self.game = nil
-                startNewGame()
+                startGame(timeOut: firstStartTimerLength)
             }
         }
         else {
-            startNewGame()
+            startGame(timeOut: firstStartTimerLength)
         }
     }
     
@@ -450,7 +540,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     }
     
     func blinking() {
-        if !gameLoading {
+        if !gameLoading && !gameEnding {
             eyesStatus = .blinking
             rightEyeGif.animate(withGIFNamed: "rightEye_Closing.gif", loopCount: 1)
             leftEyeGif.animate(withGIFNamed: "leftEye_Closing.gif", loopCount: 1)
@@ -474,11 +564,14 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                     secretLabel.textColor = greenColor
                     secretLabel.text = spaceString(game!.discovered)
                     SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
+                    restartNewGame(timeOut: endingTimerLength, won: true)
                 case .lost:
                     print("lost")
                     secretLabel.textColor = UIColor.red
+                    definitionLabel.textColor = UIColor.red
                     secretLabel.text = spaceString(game!.secret)
                     SystemSoundID.playFileNamed("buzzer", withExtenstion: "aiff")
+                    restartNewGame(timeOut: endingTimerLength, won: false)
                 case .found:
                     print("found")
                     secretLabel.text = spaceString(game!.discovered)
@@ -497,7 +590,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     }
     
     func leftWinking() {
-        if !gameLoading {
+        if !gameLoading && !gameEnding {
             eyesStatus = .left
             SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
             leftEyeGif.animate(withGIFNamed: "leftEye_Closing.gif", loopCount: 1)
@@ -507,7 +600,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     }
     
     func rightWinking() {
-        if !gameLoading {
+        if !gameLoading && !gameEnding {
             eyesStatus = .right
             SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
             rightEyeGif.animate(withGIFNamed: "rightEye_Closing.gif", loopCount: 1)
@@ -525,14 +618,16 @@ extension ViewController: SwiftCarouselDelegate {
             current.font = UIFont(name: "HelveticaNeue-Bold", size: 38.0)
             
             if let g = game {
-                if g.discovered.contains(current.text!.lowercased()) {
-                    current.textColor = greenColor
-                }
-                else if g.lettersTried.contains(current.text!.lowercased()) {
-                    current.textColor = UIColor.red
-                }
-                else {
-                    current.textColor = UIColor.white
+                if !removeSelectedWordFromCarousel {
+                    if g.discovered.contains(current.text!.lowercased()) {
+                        current.textColor = greenColor
+                    }
+                    else if g.lettersTried.contains(current.text!.lowercased()) {
+                        current.textColor = UIColor.red
+                    }
+                    else {
+                        current.textColor = UIColor.white
+                    }
                 }
             }
             else {
