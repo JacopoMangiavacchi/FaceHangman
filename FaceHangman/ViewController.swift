@@ -571,7 +571,10 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     }
     
     func blinking() {
-        if !gameLoading && !gameEnding {
+        if errorLoading {
+            startGame(timeOut: restartTimerLength)
+        }
+        else if !gameLoading && !gameEnding {
             eyesStatus = .blinking
             rightEyeGif.animate(withGIFNamed: "rightEye_Closing.gif", loopCount: 1)
             leftEyeGif.animate(withGIFNamed: "leftEye_Closing.gif", loopCount: 1)
