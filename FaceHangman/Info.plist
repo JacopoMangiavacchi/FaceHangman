@@ -44,7 +44,9 @@
 	</array>
 	<key>WordnikKey</key>
 	<string>x</string>
-	<key>WordnikURL</key>
-	<string>https://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&amp;includePartOfSpeech=noun&amp;excludePartOfSpeech=proper-noun&amp;minCorpusCount=1&amp;maxCorpusCount=-1&amp;minDictionaryCount=3&amp;maxDictionaryCount=-1&amp;minLength=5&amp;maxLength=8&amp;limit=1&amp;api_key=</string>
+	<key>WordnikSecretURL</key>
+	<string>https://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&amp;includePartOfSpeech=noun&amp;excludePartOfSpeech=proper-noun&amp;minCorpusCount=1&amp;maxCorpusCount=-1&amp;minDictionaryCount=3&amp;maxDictionaryCount=-1&amp;minLength=5&amp;maxLength=8&amp;limit=1&amp;api_key=%@</string>
+	<key>WordnikDefinitionURL</key>
+	<string>https://api.wordnik.com/v4/word.json/%@/definitions?api_key=%@</string>
 </dict>
 </plist>

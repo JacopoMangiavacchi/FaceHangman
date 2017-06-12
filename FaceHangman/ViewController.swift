@@ -174,12 +174,53 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     var isTimerRunning = false
     
     var game: HangmanGame?
+    var definition: String?
     
     
     internal func spaceString(_ string: String) -> String {
         return string.uppercased().characters.map({ c in "\(c) " }).joined()
     }
     
+    
+    func getSecret(startCallback:@escaping (_ secret: String) -> Void) {
+        if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
+            if let infoDictionary = NSDictionary(contentsOfFile: path) {
+                if let baseURL = infoDictionary.object(forKey: "WordnikSecretURL") as? String {
+                    if let key = infoDictionary.object(forKey: "WordnikKey") as? String {
+                        Alamofire.request(String(format: baseURL, key)).responseJSON { response in
+                            if let json = response.result.value as? [[String:Any]] {
+                                if json.count > 0 {
+                                    startCallback(json[0]["word"] as! String)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    func getDefinition() {
+        self.definition = nil
+        if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
+            if let infoDictionary = NSDictionary(contentsOfFile: path) {
+                if let baseURL = infoDictionary.object(forKey: "WordnikDefinitionURL") as? String {
+                    if let key = infoDictionary.object(forKey: "WordnikKey") as? String {
+                        if let secret = self.game?.secret {
+                            Alamofire.request(String(format: baseURL, secret, key)).responseJSON { response in
+                                if let json = response.result.value as? [[String:Any]] {
+                                    if json.count > 0 {
+                                        self.definition = json[0]["text"] as? String
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -204,21 +245,12 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         
         label.text = "loading ..."
         
+
         //Start Game
-        if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
-            if let infoDictionary = NSDictionary(contentsOfFile: path) {
-                if let baseURL = infoDictionary.object(forKey: "WordnikURL") as? String {
-                    if let key = infoDictionary.object(forKey: "WordnikKey") as? String {
-                        Alamofire.request(baseURL + key).responseJSON { response in
-                            if let json = response.result.value as? [[String:Any]] {
-                                print(json)
-                                self.game = HangmanGame(secret: json[0]["word"] as! String, maxFail: 9)
-                                self.label.text = self.spaceString(self.game!.discovered)
-                            }
-                        }
-                    }
-                }
-            }
+        getSecret { (secret) in
+            self.game = HangmanGame(secret: secret, maxFail: 9)
+            self.label.text = self.spaceString(self.game!.discovered)
+            self.getDefinition()
         }
     }
     
