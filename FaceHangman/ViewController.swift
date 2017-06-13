@@ -306,12 +306,17 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
 
     func showHelp() {
         wonLostMessageLabel.isHidden = true
+        wonLostMessageLabel.textColor = greenColor
 
         secretLabel.textColor = greenColor
         definitionLabel.textColor = greenColor
         
-        definitionLabel.text = ""
-        secretLabel.text = "help !!!"
+        
+        definitionLabel.text =      "Discover the Secret Word one letter at a time"
+        wonLostMessageLabel.text =  "Wink with your Left or Rigth Eye to select a letter"
+        secretLabel.text =          "Blink with both Eyes to confirn the letter to try"
+        
+        wonLostMessageLabel.isHidden = false
         carousel.removeFromSuperview()
     }
     
@@ -323,6 +328,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         secretLabel.text = ""
         carousel.isHidden = false
         
+        wonLostMessageLabel.isHidden = true
         loadCarouselCharacter()
         resetCarousel(nil)
     }
@@ -595,24 +601,24 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                 case .alreadyTried:
                     print("alreadyTried")
                 case .won:
-                    print("won")
+                    //print("won")
                     secretLabel.textColor = greenColor
                     secretLabel.text = spaceString(game!.discovered)
                     SystemSoundID.playFileNamed("won", withExtenstion: "aiff")
                     restartNewGame(timeOut: endingTimerLength, won: true)
                 case .lost:
-                    print("lost")
+                    //print("lost")
                     secretLabel.textColor = UIColor.red
                     definitionLabel.textColor = UIColor.red
                     secretLabel.text = spaceString(game!.secret)
                     SystemSoundID.playFileNamed("lost", withExtenstion: "aiff")
                     restartNewGame(timeOut: endingTimerLength, won: false)
                 case .found:
-                    print("found")
+                    //print("found")
                     secretLabel.text = spaceString(game!.discovered)
                     SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
                 case .notFound:
-                    print("notFound")
+                    //print("notFound")
                     secretLabel.text = spaceString(game!.discovered)
                     SystemSoundID.playFileNamed("buzzer", withExtenstion: "aiff")
                 }
