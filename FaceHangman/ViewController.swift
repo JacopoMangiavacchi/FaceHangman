@@ -233,7 +233,11 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     var endingTimer: Timer?
     var gameEnding = false
 
-
+    var mustShowHelp = false
+    var inHelp = false
+    var inHelpStep = 0
+    
+    
     internal func spaceString(_ string: String) -> String {
         return string.uppercased().characters.map({ c in "\(c) " }).joined()
     }
@@ -344,7 +348,18 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         
         gameLoading = true
         gameEnding = false
+        
+        
+        
         showHelp()
+        if mustShowHelp {
+            UserDefaults.standard.setValue(false, forKey: "showHelp")
+
+            print("HELP!!!")
+        }
+        
+        
+        
         startingGameTime = CFAbsoluteTimeGetCurrent()
         
         hangmanImage.image = UIImage(named: "hangman_0.png")
@@ -437,6 +452,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         saveGame()
     }
 
+    
     func saveGame() {
         do {
             UserDefaults.standard.setValue(try self.game?.save(), forKey: "LastSavedGame")
@@ -446,9 +462,37 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         }
     }
     
+    
+    func registerSettingsBundle(){
+        let appDefaults = [String:AnyObject]()
+        UserDefaults.standard.register(defaults: appDefaults)
+    }
+    
+    
+    func updateHelpFromDefaults(){
+        //Get the defaults
+        let defaults = UserDefaults.standard
+        
+        if defaults.object(forKey: "showHelp") == nil || defaults.bool(forKey: "showHelp") || defaults.bool(forKey: "alwaysShowHelp") {
+            mustShowHelp = true
+        }
+    }
+    
+    
+    func defaultsChanged(){
+        updateHelpFromDefaults()
+    }
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        registerSettingsBundle()
+        updateHelpFromDefaults()
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.defaultsChanged),
+                                                     name: UserDefaults.didChangeNotification,
+                                                     object: nil)
+
         faceDetector.beginFaceDetection()
         
         let cameraView = faceDetector.cameraView
