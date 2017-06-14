@@ -79,6 +79,18 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         return temp
     }()
     
+    lazy var helpImage: UIImageView = {
+        var temp = UIImageView(frame: CGRect(x: 0,
+                                             y: 0,
+                                             width: UIScreen.main.bounds.width,
+                                             height: UIScreen.main.bounds.height))
+        temp.contentMode = .scaleAspectFit
+        temp.alpha = 1.0
+        temp.image = UIImage(named: "help_0.png")
+        temp.isHidden = true
+        return temp
+    }()
+
     lazy var rightEyeGif: GIFImageView = {
         let temp = GIFImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width / 2.1, height: UIScreen.main.bounds.height / 7.1))  //150x80
         temp.alpha = 0.0
@@ -221,22 +233,18 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     var definition: String?
 
     var errorLoading = false
-
-    let firstStartTimerLength = 5.0
-    var loadingTimer: Timer?
-    var startTimer: Timer?
-    var startingGameTime: CFAbsoluteTime?
     var gameLoading = true
 
     let endingTimerLength = 8.0
-    let restartTimerLength = 2.0
     var endingTimer: Timer?
     var gameEnding = false
 
     var mustShowHelp = false
     var inHelp = false
     var inHelpStep = 0
-    
+    let helpTimerLength = 10.0
+    var helpTimer: Timer?
+
     
     internal func spaceString(_ string: String) -> String {
         return string.uppercased().characters.map({ c in "\(c) " }).joined()
@@ -308,85 +316,93 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     }
     
 
-    func showHelp() {
-        wonLostMessageLabel.isHidden = true
-        wonLostMessageLabel.textColor = greenColor
-
-        secretLabel.textColor = greenColor
-        definitionLabel.textColor = greenColor
-        
-        
-        definitionLabel.text =      "Discover the Secret Word one letter at a time"
-        wonLostMessageLabel.text =  "Wink with your Left or Rigth Eye to select a letter"
-        secretLabel.text =          "Blink with both Eyes to confirn the letter to try"
-        
-        wonLostMessageLabel.isHidden = false
-        carousel.removeFromSuperview()
-    }
-    
-    func hideHelp() {
-        secretLabel.textColor = greenColor
-        definitionLabel.textColor = greenColor
-
-        definitionLabel.text = ""
-        secretLabel.text = ""
-        carousel.isHidden = false
-        
-        wonLostMessageLabel.isHidden = true
-        loadCarouselCharacter()
-        resetCarousel(nil)
-    }
-    
-    
-//    enum LoadSecretResult {
-//        case OK(secret: String)
-//        case Error(error: String)
-//    }
-//    
-    func startGame(timeOut: Double) {
+    func startGame() {
         errorLoading = false
         
         gameLoading = true
         gameEnding = false
         
-        
-        
-        showHelp()
-        if mustShowHelp {
-            UserDefaults.standard.setValue(false, forKey: "showHelp")
+        secretLabel.textColor = greenColor
+        definitionLabel.textColor = greenColor
+        wonLostMessageLabel.textColor = greenColor
 
-            print("HELP!!!")
-        }
+        secretLabel.text = "Generating Secret Word ..."
+        definitionLabel.text = ""
+        wonLostMessageLabel.text = ""
         
-        
-        
-        startingGameTime = CFAbsoluteTimeGetCurrent()
-        
-        hangmanImage.image = UIImage(named: "hangman_0.png")
-
-        loadingTimer = Timer.scheduledTimer(timeInterval: timeOut, target: self,   selector: (#selector(ViewController.loadingTimeout)), userInfo: nil, repeats: false)
-
-        //Start Game
+        //Get Secret and create a new game
         getSecret { (result) in
             switch result {
             case .OK(let secret):
-                self.game = HangmanGame(secret: secret, maxFail: 9)
-                self.getDefinition()
+                self.readyToStartWithSecret(secret)
                 
-                let differentTime = CFAbsoluteTimeGetCurrent() - self.startingGameTime!
-                
-                if differentTime > timeOut  {
-                    self.reallyStartGame()
-                }
-                else  {
-                    self.startTimer = Timer.scheduledTimer(timeInterval: timeOut - differentTime, target: self,   selector: (#selector(ViewController.reallyStartGame)), userInfo: nil, repeats: false)
-                }
             case .Error(let error):
                 print("*** \(error) ***")
-                self.secretLabel.text = "Network Error"
+                self.secretLabel.text = "Network Error, Blink both Eyes for retry"
                 self.errorLoading = true
             }
         }
+
+        if mustShowHelp {
+            mustShowHelp = false
+            inHelp = true
+            
+            UserDefaults.standard.setValue(false, forKey: "showHelp")
+            
+            helpImage.isHidden = false
+            
+            faceMaskImage.isHidden = true
+            hangmanImage.isHidden = true
+            leftEyeGif.isHidden = true
+            rightEyeGif.isHidden = true
+            secretLabel.isHidden = true
+            definitionLabel.isHidden = true
+            carousel.isHidden = true
+            wonLostMessageLabel.isHidden = true
+
+            helpTimer = Timer.scheduledTimer(timeInterval: helpTimerLength, target: self,   selector: (#selector(ViewController.endingHelp)), userInfo: nil, repeats: false)
+        }
+        else {
+            endingHelp()
+        }
+    }
+    
+    
+    func readyToStartWithSecret(_ secret: String) {
+        game = HangmanGame(secret: secret, maxFail: 9)
+        saveGame()
+
+        getDefinition()
+        
+        gameLoading = false
+        gameEnding = false
+        
+        secretLabel.text = self.spaceString(self.game!.discovered)
+        definitionLabel.text = self.definition
+    }
+    
+    
+    func endingHelp() {
+        helpTimer?.invalidate()
+        helpTimer = nil
+        
+        inHelp = false
+        
+        helpImage.isHidden = true
+        
+        faceMaskImage.isHidden = false
+        hangmanImage.isHidden = false
+        leftEyeGif.isHidden = false
+        rightEyeGif.isHidden = false
+        secretLabel.isHidden = false
+        definitionLabel.isHidden = false
+        carousel.isHidden = false
+        
+        hangmanImage.image = UIImage(named: "hangman_0.png")
+        
+        loadCarouselCharacter()
+        resetCarousel(nil)
+        carousel.selectItem(0, animated: true)
     }
     
     
@@ -409,50 +425,14 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     }
     
     
-    func loadingTimeout() {
-        loadingTimer?.invalidate()
-        loadingTimer = nil
-        
-        if gameLoading {
-            hideHelp()
-            
-            if errorLoading {
-                secretLabel.text = "Blink both Eyes for retry"
-            }
-            else {
-                secretLabel.text = "loading ..."
-            }
-        }
-    }
-
-    
     func endingTimeout() {
         endingTimer?.invalidate()
         endingTimer = nil
 
-        startGame(timeOut: restartTimerLength)
+        startGame()
     }
 
 
-    func reallyStartGame() {
-        loadingTimer?.invalidate()
-        loadingTimer = nil
-        
-        startTimer?.invalidate()
-        startTimer = nil
-        
-        gameLoading = false
-        gameEnding = false
-        
-        hideHelp()
-        
-        self.secretLabel.text = self.spaceString(self.game!.discovered)
-        self.definitionLabel.text = self.definition
-        self.carousel.selectItem(0, animated: true)
-        saveGame()
-    }
-
-    
     func saveGame() {
         do {
             UserDefaults.standard.setValue(try self.game?.save(), forKey: "LastSavedGame")
@@ -511,6 +491,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         view.addSubview(definitionLabel)
         view.addSubview(carousel)
         view.addSubview(wonLostMessageLabel)
+        view.addSubview(helpImage)
         
         if let lastSavedGame = UserDefaults.standard.value(forKey: "LastSavedGame") as? String {
             do {
@@ -537,16 +518,16 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                 }
                 else {
                     self.game = nil
-                    startGame(timeOut: firstStartTimerLength)
+                    startGame()
                 }
             }
             catch {
                 self.game = nil
-                startGame(timeOut: firstStartTimerLength)
+                startGame()
             }
         }
         else {
-            startGame(timeOut: firstStartTimerLength)
+            startGame()
         }
     }
     
@@ -623,7 +604,9 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     func blinking() {
         if errorLoading {
             SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
-            startGame(timeOut: restartTimerLength)
+            startGame()
+        }
+        else if inHelp {
         }
         else if !gameLoading && !gameEnding {
             eyesStatus = .blinking
