@@ -242,7 +242,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     var mustShowHelp = false
     var inHelp = false
     var inHelpStep = 0
-    let helpTimerLength = 10.0
+    let helpTimerLength = 3.0
     var helpTimer: Timer?
 
     
@@ -361,7 +361,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
             wonLostMessageLabel.isHidden = true
         }
         else {
-            endingHelp()
+            closeHelp()
         }
     }
     
@@ -384,6 +384,36 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         helpTimer?.invalidate()
         helpTimer = nil
         
+        switch inHelpStep {
+        case 5:
+            inHelpStep = 6
+            helpImage.image = UIImage(named: "help_6.png")
+            helpTimer = Timer.scheduledTimer(timeInterval: helpTimerLength, target: self,   selector: (#selector(ViewController.endingHelp)), userInfo: nil, repeats: false)
+        case 6:
+            inHelpStep = 7
+            helpImage.image = UIImage(named: "help_7.png")
+            helpTimer = Timer.scheduledTimer(timeInterval: helpTimerLength, target: self,   selector: (#selector(ViewController.endingHelp)), userInfo: nil, repeats: false)
+        case 7:
+            inHelpStep = 8
+            helpImage.image = UIImage(named: "help_8.png")
+            helpTimer = Timer.scheduledTimer(timeInterval: helpTimerLength, target: self,   selector: (#selector(ViewController.endingHelp)), userInfo: nil, repeats: false)
+        case 8:
+            inHelpStep = 9
+            helpImage.image = UIImage(named: "help_9.png")
+            helpTimer = Timer.scheduledTimer(timeInterval: helpTimerLength, target: self,   selector: (#selector(ViewController.endingHelp)), userInfo: nil, repeats: false)
+        case 9:
+            inHelpStep = 10
+            helpImage.image = UIImage(named: "help_10.png")
+            helpTimer = Timer.scheduledTimer(timeInterval: helpTimerLength, target: self,   selector: (#selector(ViewController.endingHelp)), userInfo: nil, repeats: false)
+        case 10:
+            closeHelp()
+        default:
+            print("Error in endingHelp")
+        }
+    }
+    
+    
+    func closeHelp() {
         inHelp = false
         
         helpImage.isHidden = true
@@ -605,14 +635,23 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
             startGame()
         }
         else if inHelp {
-            if inHelpStep == 0 {
+            switch inHelpStep {
+            case 0:
                 SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
                 inHelpStep = 1
                 helpImage.image = UIImage(named: "help_1.png")
-                
+            case 3:
+                SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
+                inHelpStep = 4
+                helpImage.image = UIImage(named: "help_4.png")
+            case 4:
+                SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
+                inHelpStep = 5
+                helpImage.image = UIImage(named: "help_5.png")
                 helpTimer = Timer.scheduledTimer(timeInterval: helpTimerLength, target: self,   selector: (#selector(ViewController.endingHelp)), userInfo: nil, repeats: false)
+            default:
+                print("ERROR in Help Blinking")
             }
-
         }
         else if !gameLoading && !gameEnding {
             eyesStatus = .blinking
@@ -664,7 +703,14 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     }
     
     func leftWinking() {
-        if !gameLoading && !gameEnding {
+        if inHelp {
+            if inHelpStep == 1 {
+                SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
+                inHelpStep = 2
+                helpImage.image = UIImage(named: "help_2.png")
+            }
+        }
+        else if !gameLoading && !gameEnding {
             eyesStatus = .left
             SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
             leftEyeGif.animate(withGIFNamed: "leftEye_Closing.gif", loopCount: 1)
@@ -674,7 +720,14 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     }
     
     func rightWinking() {
-        if !gameLoading && !gameEnding {
+        if inHelp {
+            if inHelpStep == 2 {
+                SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
+                inHelpStep = 3
+                helpImage.image = UIImage(named: "help_3.png")
+            }
+        }
+        else if !gameLoading && !gameEnding {
             eyesStatus = .right
             SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
             rightEyeGif.animate(withGIFNamed: "rightEye_Closing.gif", loopCount: 1)
