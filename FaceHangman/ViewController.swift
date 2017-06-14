@@ -344,11 +344,11 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         }
 
         if mustShowHelp {
+            UserDefaults.standard.setValue(false, forKey: "showHelp")
             mustShowHelp = false
             inHelp = true
-            
-            UserDefaults.standard.setValue(false, forKey: "showHelp")
-            
+            inHelpStep = 0
+            helpImage.image = UIImage(named: "help_0.png")
             helpImage.isHidden = false
             
             faceMaskImage.isHidden = true
@@ -359,8 +359,6 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
             definitionLabel.isHidden = true
             carousel.isHidden = true
             wonLostMessageLabel.isHidden = true
-
-            helpTimer = Timer.scheduledTimer(timeInterval: helpTimerLength, target: self,   selector: (#selector(ViewController.endingHelp)), userInfo: nil, repeats: false)
         }
         else {
             endingHelp()
@@ -607,6 +605,14 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
             startGame()
         }
         else if inHelp {
+            if inHelpStep == 0 {
+                SystemSoundID.playFileNamed("blink", withExtenstion: "aiff")
+                inHelpStep = 1
+                helpImage.image = UIImage(named: "help_1.png")
+                
+                helpTimer = Timer.scheduledTimer(timeInterval: helpTimerLength, target: self,   selector: (#selector(ViewController.endingHelp)), userInfo: nil, repeats: false)
+            }
+
         }
         else if !gameLoading && !gameEnding {
             eyesStatus = .blinking
