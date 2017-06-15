@@ -240,7 +240,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     var mustShowHelp = false
     var inHelp = false
     var inHelpStep = 0
-    let helpTimerLength = 2.0
+    let helpTimerLength = 1.5
     let helpTimerCountdownLength = 1.0
     var helpTimer: Timer?
 
@@ -325,7 +325,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         definitionLabel.textColor = greenColor
         wonLostMessageLabel.textColor = greenColor
 
-        secretLabel.text = "Generating Secret Word ..."
+        secretLabel.text = "Generating Secret Word"
         definitionLabel.text = ""
         wonLostMessageLabel.text = ""
         
@@ -546,6 +546,23 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                     saveGame()
                     gameLoading = false
                     gameEnding = false
+
+                    if mustShowHelp {
+                        mustShowHelp = false
+                        inHelp = true
+                        inHelpStep = 0
+                        helpImage.image = UIImage(named: "help_0.png")
+                        helpImage.isHidden = false
+                        
+                        faceMaskImage.isHidden = true
+                        hangmanImage.isHidden = true
+                        leftEyeGif.isHidden = true
+                        rightEyeGif.isHidden = true
+                        secretLabel.isHidden = true
+                        definitionLabel.isHidden = true
+                        carousel.isHidden = true
+                        wonLostMessageLabel.isHidden = true
+                    }
                 }
                 else {
                     self.game = nil
