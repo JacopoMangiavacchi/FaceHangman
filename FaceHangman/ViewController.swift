@@ -37,14 +37,12 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     let numberOfLetters = 26
     let carouselSelectedFontSize:CGFloat = 32.0
     let carouselUnselectedFontSize:CGFloat = 28.0
-    let greenColor = UIColor(red: 212/255.0, green: 234/255.0, blue: 95/255.0, alpha: 1.0)
+    let greenColor = UIColor.black //UIColor(red: 212/255.0, green: 234/255.0, blue: 95/255.0, alpha: 1.0)
     
     
     let topHeight:CGFloat = UIScreen.main.bounds.height / 4
     let statusBarHeight:CGFloat = 10
     let definitionHeight:CGFloat = 60
-//    let carouselHeight:CGFloat = ((UIScreen.main.bounds.height / 4) - 20 - 40) / 2
-//    let secretHeight:CGFloat = ((UIScreen.main.bounds.height / 4) - 20 - 40) / 2
     func carouselHeight() -> CGFloat { return (topHeight - statusBarHeight - definitionHeight) / 2 }
     func secretHeight() -> CGFloat { return (topHeight - statusBarHeight - definitionHeight) / 2 }
 
@@ -75,7 +73,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                                              height: UIScreen.main.bounds.height))
         temp.image = UIImage(named: "faceMask.png")
         temp.contentMode = .scaleAspectFit
-        temp.alpha = 0.6
+        temp.alpha = 0.9
         return temp
     }()
     
@@ -178,7 +176,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     func labelForCarouselString(_ string: String) -> UILabel {
         let text = UILabel()
         text.text = string
-        text.textColor = .white
+        text.textColor = .black
         text.textAlignment = .center
         text.font = UIFont(name: "HelveticaNeue-Light", size: carouselUnselectedFontSize)
         text.numberOfLines = 0
@@ -205,7 +203,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                                              width: UIScreen.main.bounds.width,
                                              height: self.secretHeight()))
         temp.textColor = self.greenColor
-        temp.font = UIFont(name: "HelveticaNeue-Light", size: self.carouselSelectedFontSize)
+        temp.font = UIFont(name: "HelveticaNeue-Bold", size: self.carouselSelectedFontSize)
         temp.textAlignment = .center
         temp.minimumScaleFactor = 10/UIFont.labelFontSize
         temp.adjustsFontSizeToFitWidth = true
@@ -242,7 +240,8 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     var mustShowHelp = false
     var inHelp = false
     var inHelpStep = 0
-    let helpTimerLength = 3.0
+    let helpTimerLength = 2.0
+    let helpTimerCountdownLength = 1.0
     var helpTimer: Timer?
 
     
@@ -388,23 +387,26 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         case 5:
             inHelpStep = 6
             helpImage.image = UIImage(named: "help_6.png")
+            SystemSoundID.playFileNamed("buzzer", withExtenstion: "aiff")
             helpTimer = Timer.scheduledTimer(timeInterval: helpTimerLength, target: self,   selector: (#selector(ViewController.endingHelp)), userInfo: nil, repeats: false)
         case 6:
             inHelpStep = 7
             helpImage.image = UIImage(named: "help_7.png")
+            SystemSoundID.playFileNamed("buzzer", withExtenstion: "aiff")
             helpTimer = Timer.scheduledTimer(timeInterval: helpTimerLength, target: self,   selector: (#selector(ViewController.endingHelp)), userInfo: nil, repeats: false)
         case 7:
             inHelpStep = 8
             helpImage.image = UIImage(named: "help_8.png")
-            helpTimer = Timer.scheduledTimer(timeInterval: helpTimerLength, target: self,   selector: (#selector(ViewController.endingHelp)), userInfo: nil, repeats: false)
+            SystemSoundID.playFileNamed("buzzer", withExtenstion: "aiff")
+            helpTimer = Timer.scheduledTimer(timeInterval: helpTimerCountdownLength, target: self,   selector: (#selector(ViewController.endingHelp)), userInfo: nil, repeats: false)
         case 8:
             inHelpStep = 9
             helpImage.image = UIImage(named: "help_9.png")
-            helpTimer = Timer.scheduledTimer(timeInterval: helpTimerLength, target: self,   selector: (#selector(ViewController.endingHelp)), userInfo: nil, repeats: false)
+            helpTimer = Timer.scheduledTimer(timeInterval: helpTimerCountdownLength, target: self,   selector: (#selector(ViewController.endingHelp)), userInfo: nil, repeats: false)
         case 9:
             inHelpStep = 10
             helpImage.image = UIImage(named: "help_10.png")
-            helpTimer = Timer.scheduledTimer(timeInterval: helpTimerLength, target: self,   selector: (#selector(ViewController.endingHelp)), userInfo: nil, repeats: false)
+            helpTimer = Timer.scheduledTimer(timeInterval: helpTimerCountdownLength, target: self,   selector: (#selector(ViewController.endingHelp)), userInfo: nil, repeats: false)
         case 10:
             closeHelp()
         default:
@@ -495,6 +497,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = .white
         registerSettingsBundle()
         updateHelpFromDefaults()
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.defaultsChanged),
@@ -506,10 +509,10 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         let cameraView = faceDetector.cameraView
         view.addSubview(cameraView)
         
-        let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
-        visualEffectView.frame = view.bounds
-        visualEffectView.alpha = 0.8
-        view.addSubview(visualEffectView)
+//        let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+//        visualEffectView.frame = view.bounds
+//        visualEffectView.alpha = 0.8
+//        view.addSubview(visualEffectView)
         
         view.addSubview(faceMaskImage)
         view.addSubview(hangmanImage)
@@ -753,12 +756,12 @@ extension ViewController: SwiftCarouselDelegate {
                         current.textColor = UIColor.red
                     }
                     else {
-                        current.textColor = UIColor.white
+                        current.textColor = UIColor.black
                     }
                 }
             }
             else {
-                current.textColor = UIColor.white
+                current.textColor = UIColor.black
             }
             
             return current
@@ -779,11 +782,11 @@ extension ViewController: SwiftCarouselDelegate {
                     current.textColor = UIColor.red
                 }
                 else {
-                    current.textColor = UIColor.white
+                    current.textColor = UIColor.black
                 }
             }
             else {
-                current.textColor = UIColor.white
+                current.textColor = UIColor.black
             }
 
             return current
