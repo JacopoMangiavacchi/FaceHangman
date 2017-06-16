@@ -515,6 +515,19 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
 //        view.addSubview(visualEffectView)
         
         view.addSubview(faceMaskImage)
+
+        let diffBorder = faceMaskImage.bounds.width - (faceMaskImage.image!.size.width / (faceMaskImage.image!.size.height / faceMaskImage.bounds.height))
+        if diffBorder > 0 {
+            let leftBorder = UIView(frame: CGRect(x: 0, y: 0, width: diffBorder / 2, height: faceMaskImage.bounds.height))
+            leftBorder.backgroundColor = .white
+            leftBorder.alpha = 0.9
+            view.addSubview(leftBorder)
+            let rightBorder = UIView(frame: CGRect(x: ( faceMaskImage.bounds.width - (diffBorder / 2)), y: 0, width: diffBorder / 2, height: faceMaskImage.bounds.height))
+            rightBorder.backgroundColor = .white
+            rightBorder.alpha = 0.9
+            view.addSubview(rightBorder)
+        }
+        
         view.addSubview(hangmanImage)
         view.addSubview(leftEyeGif)
         view.addSubview(rightEyeGif)
