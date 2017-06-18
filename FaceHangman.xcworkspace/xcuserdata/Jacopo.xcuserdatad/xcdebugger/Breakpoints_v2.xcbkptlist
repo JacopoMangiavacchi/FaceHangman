@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/SwiftCarousel/Source/SwiftCarousel.swift"
-            timestampString = "518723900.675093"
+            timestampString = "519478729.723669"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "204"
-            endingLineNumber = "204"
+            startingLineNumber = "535"
+            endingLineNumber = "535"
             landmarkName = "deinit"
             landmarkType = "7">
          </BreakpointContent>

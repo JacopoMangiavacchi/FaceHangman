@@ -64,7 +64,7 @@ class FaceDetector: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
     override init()  {
         super.init()
         
-        captureSetup(AVCaptureDevicePosition.front)
+        captureSetup(AVCaptureDevice.Position.front)
         detector = CIDetector(ofType: CIDetectorTypeFace, context: nil, options: [CIDetectorAccuracy : CIDetectorAccuracyHigh as AnyObject])
     }
     
@@ -77,57 +77,47 @@ class FaceDetector: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
         self.captureSession.stopRunning()
     }
     
-    fileprivate func captureSetup (_ position : AVCaptureDevicePosition) {
+    fileprivate func captureSetup (_ position : AVCaptureDevice.Position) {
         var captureError : NSError?
-        var captureDevice : AVCaptureDevice!
-        
-        for testedDevice in AVCaptureDevice.devices(withMediaType: AVMediaTypeVideo){
-            if (testedDevice as AnyObject).position == position {
-                captureDevice = testedDevice as! AVCaptureDevice
+        if let captureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: AVMediaType.video, position: .front) {
+            var deviceInput : AVCaptureDeviceInput?
+            do {
+                deviceInput = try AVCaptureDeviceInput(device: captureDevice)
+            } catch let error as NSError {
+                captureError = error
+                deviceInput = nil
             }
-        }
-        
-        if captureDevice == nil {
-            captureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
-        }
-        
-        var deviceInput : AVCaptureDeviceInput?
-        do {
-            deviceInput = try AVCaptureDeviceInput(device: captureDevice)
-        } catch let error as NSError {
-            captureError = error
-            deviceInput = nil
-        }
-        captureSession.sessionPreset = AVCaptureSessionPresetHigh
-        
-        if captureError == nil {
-            if captureSession.canAddInput(deviceInput) {
-                captureSession.addInput(deviceInput)
+            captureSession.sessionPreset = AVCaptureSession.Preset.high
+            
+            if captureError == nil {
+                if captureSession.canAddInput(deviceInput!) {
+                    captureSession.addInput(deviceInput!)
+                }
+                
+                self.videoDataOutput = AVCaptureVideoDataOutput()
+                self.videoDataOutput!.videoSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable as! String: Int(kCVPixelFormatType_32BGRA)]
+                self.videoDataOutput!.alwaysDiscardsLateVideoFrames = true
+                self.videoDataOutputQueue = DispatchQueue(label: "VideoDataOutputQueue", attributes: [])
+                self.videoDataOutput!.setSampleBufferDelegate(self, queue: self.videoDataOutputQueue!)
+                
+                if captureSession.canAddOutput(self.videoDataOutput!) {
+                    captureSession.addOutput(self.videoDataOutput!)
+                }
             }
             
-            self.videoDataOutput = AVCaptureVideoDataOutput()
-            self.videoDataOutput!.videoSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable: Int(kCVPixelFormatType_32BGRA)]
-            self.videoDataOutput!.alwaysDiscardsLateVideoFrames = true
-            self.videoDataOutputQueue = DispatchQueue(label: "VideoDataOutputQueue", attributes: [])
-            self.videoDataOutput!.setSampleBufferDelegate(self, queue: self.videoDataOutputQueue!)
+            cameraView.frame = UIScreen.main.bounds
             
-            if captureSession.canAddOutput(self.videoDataOutput) {
-                captureSession.addOutput(self.videoDataOutput)
-            }
+            let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+            previewLayer.frame = UIScreen.main.bounds
+            previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+            cameraView.layer.addSublayer(previewLayer)
         }
-        
-        cameraView.frame = UIScreen.main.bounds
-		
-		let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        previewLayer?.frame = UIScreen.main.bounds
-        previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
-        cameraView.layer.addSublayer(previewLayer!)
     }
     
     var options : [String : AnyObject]?
     
     //MARK: CAPTURE-OUTPUT/ANALYSIS OF FACIAL-FEATURES
-    func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, from connection: AVCaptureConnection!) {
+    func captureOutput(_ captureOutput: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         
         let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
         let opaqueBuffer = Unmanaged<CVImageBuffer>.passUnretained(imageBuffer!).toOpaque()

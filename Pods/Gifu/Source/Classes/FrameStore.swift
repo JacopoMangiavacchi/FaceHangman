@@ -93,7 +93,7 @@ class FrameStore {
 
   // MARK: - Frames
   /// Loads the frames from an image source, resizes them, then caches them in `animatedFrames`.
-  func prepareFrames(_ completionHandler: ((Void) -> Void)? = .none) {
+  func prepareFrames(_ completionHandler: (() -> Void)? = .none) {
     frameCount = Int(CGImageSourceGetCount(imageSource))
     animatedFrames.reserveCapacity(frameCount)
     preloadFrameQueue.async {
@@ -115,7 +115,7 @@ class FrameStore {
   /// - parameter index: The index of the duration.
   /// - returns: The duration of the given frame.
   func duration(at index: Int) -> TimeInterval {
-	return animatedFrames[safe: index]?.duration ?? TimeInterval.infinity
+    return animatedFrames[safe: index]?.duration ?? TimeInterval.infinity
   }
 
   /// Checks whether the frame should be changed and calls a handler with the results.

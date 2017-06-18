@@ -379,7 +379,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     }
     
     
-    func endingHelp() {
+    @objc func endingHelp() {
         helpTimer?.invalidate()
         helpTimer = nil
         
@@ -455,7 +455,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     }
     
     
-    func endingTimeout() {
+    @objc func endingTimeout() {
         endingTimer?.invalidate()
         endingTimer = nil
 
@@ -489,7 +489,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
     }
     
     
-    func defaultsChanged(){
+    @objc func defaultsChanged(){
         updateHelpFromDefaults()
     }
 
@@ -650,7 +650,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         }
     }
     
-    func updateWinkerTimer() {
+    @objc func updateWinkerTimer() {
         SystemSoundID.playFileNamed("tick", withExtenstion: "aiff")
         if eyesStatus == .left {
             carousel.selectItem((carousel.selectedIndex! - 1) % carousel.items.count, animated: true)
