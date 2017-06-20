@@ -17,6 +17,7 @@
 		EA12D4571ED40BDC0070D1F0 /* HangmanGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA12D4561ED40BDC0070D1F0 /* HangmanGame.swift */; };
 		EA27857A1EEF0FEE00C15FDE /* lost.aiff in Resources */ = {isa = PBXBuildFile; fileRef = EA2785781EEF0FEE00C15FDE /* lost.aiff */; };
 		EA27857B1EEF0FEE00C15FDE /* won.aiff in Resources */ = {isa = PBXBuildFile; fileRef = EA2785791EEF0FEE00C15FDE /* won.aiff */; };
+		EA9048441EF9C6B700CAA9EB /* SequenceSmoother.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9048431EF9C6B700CAA9EB /* SequenceSmoother.swift */; };
 		EAB4139B1EF0116A00F5EB0E /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = EAB4139A1EF0116A00F5EB0E /* Settings.bundle */; };
 		EAD02ABE1EEC6EB300AE6B73 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAD02ABD1EEC6EB300AE6B73 /* LaunchScreen.storyboard */; };
 		EAE1271A1ED77FA500F72E0A /* FaceDetectorFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE127191ED77FA500F72E0A /* FaceDetectorFilter.swift */; };
@@ -74,6 +75,7 @@
 		EA12D4561ED40BDC0070D1F0 /* HangmanGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HangmanGame.swift; sourceTree = "<group>"; };
 		EA2785781EEF0FEE00C15FDE /* lost.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = lost.aiff; sourceTree = "<group>"; };
 		EA2785791EEF0FEE00C15FDE /* won.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = won.aiff; sourceTree = "<group>"; };
+		EA9048431EF9C6B700CAA9EB /* SequenceSmoother.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceSmoother.swift; sourceTree = "<group>"; };
 		EAB4139A1EF0116A00F5EB0E /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		EAD02ABD1EEC6EB300AE6B73 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = FaceHangman/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EAE127191ED77FA500F72E0A /* FaceDetectorFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceDetectorFilter.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				EAE127191ED77FA500F72E0A /* FaceDetectorFilter.swift */,
 				EA12D4541ED40BAD0070D1F0 /* FaceDetector.swift */,
 				EA12D4561ED40BDC0070D1F0 /* HangmanGame.swift */,
+				EA9048431EF9C6B700CAA9EB /* SequenceSmoother.swift */,
 			);
 			path = FaceHangman;
 			sourceTree = "<group>";
@@ -433,6 +436,7 @@
 				EAE1271A1ED77FA500F72E0A /* FaceDetectorFilter.swift in Sources */,
 				EA12D4571ED40BDC0070D1F0 /* HangmanGame.swift in Sources */,
 				EA12D4451ED40B750070D1F0 /* ViewController.swift in Sources */,
+				EA9048441EF9C6B700CAA9EB /* SequenceSmoother.swift in Sources */,
 				EA12D4551ED40BAD0070D1F0 /* FaceDetector.swift in Sources */,
 				EA12D4431ED40B750070D1F0 /* AppDelegate.swift in Sources */,
 			);

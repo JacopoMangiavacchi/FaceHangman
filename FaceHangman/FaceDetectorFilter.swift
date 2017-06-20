@@ -35,6 +35,8 @@ class FaceDetectorFilter: FaceDetectorDelegate {
     var startBlinking: CFAbsoluteTime?
     var startWinking: CFAbsoluteTime?
     
+    var leftEyeSmoother = SequenceSmoother<CGPoint>(defaultValue: CGPoint(x: 0, y: 0))
+    var rightEyeSmoother = SequenceSmoother<CGPoint>(defaultValue: CGPoint(x: 0, y: 0))
     
     init(faceDetector: FaceDetector, delegate: FaceDetectorFilterDelegate) {
         self.faceDetector = faceDetector
@@ -52,6 +54,9 @@ class FaceDetectorFilter: FaceDetectorDelegate {
         }
         
         if events.contains(.faceDetected) {
+           leftEyeSmoother.resetCache()
+           rightEyeSmoother.resetCache()
+            
             startBlinking = nil
             startWinking = nil
             eyesStatus = .nothing
@@ -62,8 +67,11 @@ class FaceDetectorFilter: FaceDetectorDelegate {
         
         if self.faceDetector.faceDetected {
             if let leftPos = self.faceDetector.leftEyePosition, let rightPos = self.faceDetector.rightEyePosition {
+                let smoothLeftPos = leftEyeSmoother.smooth(leftPos)
+                let smoothRightPos = rightEyeSmoother.smooth(rightPos)
+                
                 DispatchQueue.main.async {
-                    self.delegate.faceEyePosition(left: leftPos, right: rightPos)
+                    self.delegate.faceEyePosition(left: smoothLeftPos, right: smoothRightPos)
                 }
             }
             
