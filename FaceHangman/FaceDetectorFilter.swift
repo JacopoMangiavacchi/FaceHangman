@@ -35,8 +35,8 @@ class FaceDetectorFilter: FaceDetectorDelegate {
     var startBlinking: CFAbsoluteTime?
     var startWinking: CFAbsoluteTime?
     
-    var leftEyeSmoother = SequenceSmoother<CGPoint>(defaultValue: CGPoint(x: 0, y: 0))
-    var rightEyeSmoother = SequenceSmoother<CGPoint>(defaultValue: CGPoint(x: 0, y: 0))
+    var leftEyeSmoother = SequenceSmoother<CGPoint>()
+    var rightEyeSmoother = SequenceSmoother<CGPoint>()
     
     init(faceDetector: FaceDetector, delegate: FaceDetectorFilterDelegate) {
         self.faceDetector = faceDetector

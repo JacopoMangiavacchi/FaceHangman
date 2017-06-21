@@ -9,34 +9,30 @@
 import Foundation
 
 struct SequenceSmoother<Element> {
-    fileprivate var cache: [Element]!
-    fileprivate var defaultValue: Element!
-    var currentPos = 0
+    fileprivate var cache = [Element]()
+    fileprivate var maxCacheSize = 5
+    fileprivate var currentPos = 0
     
-    init(defaultValue: Element, cacheSize: Int = 5) {
-        self.defaultValue = defaultValue
-        cache = Array(repeating: defaultValue, count: cacheSize)
+    init(cacheSize: Int = 5) {
+            maxCacheSize = cacheSize
     }
     
     mutating func resetCache() {
         currentPos = 0
-        cache = Array(repeating: defaultValue, count: cache.count)
+        cache = [Element]()
     }
     
     mutating func smooth(_ value: Element) -> Element {
-        if currentPos == cache.count {
-            //Scroll Cache Array Left
-            for i in 0..<currentPos - 1 {
-                cache[i] = cache[i+1]
-            }
-            cache[currentPos] = value
+        if cache.count < maxCacheSize {
+            cache.append(value)
         }
         else {
             cache[currentPos] = value
-            currentPos += 1
         }
         
+        currentPos = (currentPos + 1) % maxCacheSize
+        
         //Return Average
-        return value  // Array(cache[0...currentPos]).reduce(defaultValue, +) / currentPos
+        return value //cache.reduce(nil, +) / cache.count
     }
 }
