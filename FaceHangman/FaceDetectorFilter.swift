@@ -35,12 +35,23 @@ class FaceDetectorFilter: FaceDetectorDelegate {
     var startBlinking: CFAbsoluteTime?
     var startWinking: CFAbsoluteTime?
     
-    var leftEyeSmoother = SequenceSmoother<CGPoint>()
-    var rightEyeSmoother = SequenceSmoother<CGPoint>()
+    func cgPointAdd(_ a: CGPoint, _ b: CGPoint) -> CGPoint {
+        return CGPoint(x: a.x + b.x, y: a.y + b.y)
+    }
+    
+    func cgPointDivide(_ a: CGPoint, _ i: Int) -> CGPoint {
+        return CGPoint(x: a.x / CGFloat(i), y: a.y / CGFloat(i))
+    }
+    
+    var leftEyeSmoother: SequenceSmoother<CGPoint>!
+    var rightEyeSmoother: SequenceSmoother<CGPoint>!
     
     init(faceDetector: FaceDetector, delegate: FaceDetectorFilterDelegate) {
         self.faceDetector = faceDetector
         self.delegate = delegate
+        
+        leftEyeSmoother = SequenceSmoother<CGPoint>(emptyElement:CGPoint(x: 0, y: 0), addFunc: cgPointAdd, divideFunc: cgPointDivide)
+        rightEyeSmoother = SequenceSmoother<CGPoint>(emptyElement: CGPoint(x: 0, y: 0), addFunc: cgPointAdd, divideFunc: cgPointDivide)
     }
     
     func faceDetectorEvent(_ events: [FaceDetectorEvent]) {
