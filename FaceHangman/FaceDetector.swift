@@ -79,7 +79,11 @@ class FaceDetector: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
     
     fileprivate func captureSetup (_ position : AVCaptureDevice.Position) {
         var captureError : NSError?
-        if let captureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: AVMediaType.video, position: .front) {
+        
+        let devices = AVCaptureDevice.DiscoverySession(__deviceTypes: [AVCaptureDevice.DeviceType.builtInWideAngleCamera], mediaType: .video, position: AVCaptureDevice.Position.front).devices
+        
+        if devices.count > 0 {
+            let captureDevice = devices[0]
             var deviceInput : AVCaptureDeviceInput?
             do {
                 deviceInput = try AVCaptureDeviceInput(device: captureDevice)
