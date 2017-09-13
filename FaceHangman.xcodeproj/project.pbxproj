@@ -17,9 +17,9 @@
 		EA12D4571ED40BDC0070D1F0 /* HangmanGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA12D4561ED40BDC0070D1F0 /* HangmanGame.swift */; };
 		EA27857A1EEF0FEE00C15FDE /* lost.aiff in Resources */ = {isa = PBXBuildFile; fileRef = EA2785781EEF0FEE00C15FDE /* lost.aiff */; };
 		EA27857B1EEF0FEE00C15FDE /* won.aiff in Resources */ = {isa = PBXBuildFile; fileRef = EA2785791EEF0FEE00C15FDE /* won.aiff */; };
+		EA9048441EF9C6B700CAA9EB /* SequenceSmoother.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9048431EF9C6B700CAA9EB /* SequenceSmoother.swift */; };
 		EAB4139B1EF0116A00F5EB0E /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = EAB4139A1EF0116A00F5EB0E /* Settings.bundle */; };
 		EAD02ABE1EEC6EB300AE6B73 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAD02ABD1EEC6EB300AE6B73 /* LaunchScreen.storyboard */; };
-		EADB4CE11EFA7FB60064787D /* SequenceSmoother.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADB4CE01EFA7FB60064787D /* SequenceSmoother.swift */; };
 		EAE1271A1ED77FA500F72E0A /* FaceDetectorFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE127191ED77FA500F72E0A /* FaceDetectorFilter.swift */; };
 		EAE7CF701EF329270035AFB9 /* hangman_0.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE7CF661EF329270035AFB9 /* hangman_0.png */; };
 		EAE7CF711EF329270035AFB9 /* hangman_1.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE7CF671EF329270035AFB9 /* hangman_1.png */; };
@@ -75,9 +75,9 @@
 		EA12D4561ED40BDC0070D1F0 /* HangmanGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HangmanGame.swift; sourceTree = "<group>"; };
 		EA2785781EEF0FEE00C15FDE /* lost.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = lost.aiff; sourceTree = "<group>"; };
 		EA2785791EEF0FEE00C15FDE /* won.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = won.aiff; sourceTree = "<group>"; };
+		EA9048431EF9C6B700CAA9EB /* SequenceSmoother.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceSmoother.swift; sourceTree = "<group>"; };
 		EAB4139A1EF0116A00F5EB0E /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		EAD02ABD1EEC6EB300AE6B73 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = FaceHangman/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		EADB4CE01EFA7FB60064787D /* SequenceSmoother.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceSmoother.swift; sourceTree = "<group>"; };
 		EAE127191ED77FA500F72E0A /* FaceDetectorFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceDetectorFilter.swift; sourceTree = "<group>"; };
 		EAE7CF661EF329270035AFB9 /* hangman_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hangman_0.png; path = Assets/hangman/hangman_0.png; sourceTree = "<group>"; };
 		EAE7CF671EF329270035AFB9 /* hangman_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hangman_1.png; path = Assets/hangman/hangman_1.png; sourceTree = "<group>"; };
@@ -176,7 +176,7 @@
 				EAE127191ED77FA500F72E0A /* FaceDetectorFilter.swift */,
 				EA12D4541ED40BAD0070D1F0 /* FaceDetector.swift */,
 				EA12D4561ED40BDC0070D1F0 /* HangmanGame.swift */,
-				EADB4CE01EFA7FB60064787D /* SequenceSmoother.swift */,
+				EA9048431EF9C6B700CAA9EB /* SequenceSmoother.swift */,
 			);
 			path = FaceHangman;
 			sourceTree = "<group>";
@@ -296,13 +296,14 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = Jacopo;
 				TargetAttributes = {
 					EA12D43E1ED40B750070D1F0 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = SV6W498A95;
-						ProvisioningStyle = Manual;
+						LastSwiftMigration = 0900;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -435,7 +436,7 @@
 				EAE1271A1ED77FA500F72E0A /* FaceDetectorFilter.swift in Sources */,
 				EA12D4571ED40BDC0070D1F0 /* HangmanGame.swift in Sources */,
 				EA12D4451ED40B750070D1F0 /* ViewController.swift in Sources */,
-				EADB4CE11EFA7FB60064787D /* SequenceSmoother.swift in Sources */,
+				EA9048441EF9C6B700CAA9EB /* SequenceSmoother.swift in Sources */,
 				EA12D4551ED40BAD0070D1F0 /* FaceDetector.swift in Sources */,
 				EA12D4431ED40B750070D1F0 /* AppDelegate.swift in Sources */,
 			);
@@ -454,7 +455,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -462,7 +465,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -505,7 +512,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -513,7 +522,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -545,16 +558,18 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = SV6W498A95;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FaceHangman/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacopomangiavacchi.FaceHangman;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3f96de4f-0bb2-42b2-8c2e-146376c50d06";
-				PROVISIONING_PROFILE_SPECIFIER = FaceHangman;
-				SWIFT_VERSION = 3.0;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -565,16 +580,18 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = SV6W498A95;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FaceHangman/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacopomangiavacchi.FaceHangman;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3f96de4f-0bb2-42b2-8c2e-146376c50d06";
-				PROVISIONING_PROFILE_SPECIFIER = FaceHangman;
-				SWIFT_VERSION = 3.0;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

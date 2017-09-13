@@ -46,7 +46,6 @@ class FaceDetectorFilter: FaceDetectorDelegate {
     var leftEyeSmoother: SequenceSmoother<CGPoint>!
     var rightEyeSmoother: SequenceSmoother<CGPoint>!
     
-    
     init(faceDetector: FaceDetector, delegate: FaceDetectorFilterDelegate) {
         self.faceDetector = faceDetector
         self.delegate = delegate
@@ -54,7 +53,6 @@ class FaceDetectorFilter: FaceDetectorDelegate {
         leftEyeSmoother = SequenceSmoother<CGPoint>(emptyElement:CGPoint(x: 0, y: 0), addFunc: cgPointAdd, divideFunc: cgPointDivide)
         rightEyeSmoother = SequenceSmoother<CGPoint>(emptyElement: CGPoint(x: 0, y: 0), addFunc: cgPointAdd, divideFunc: cgPointDivide)
     }
-    
     
     func faceDetectorEvent(_ events: [FaceDetectorEvent]) {
         if events.contains(.noFaceDetected) {
@@ -67,9 +65,9 @@ class FaceDetectorFilter: FaceDetectorDelegate {
         }
         
         if events.contains(.faceDetected) {
-            leftEyeSmoother.resetCache()
-            rightEyeSmoother.resetCache()
-
+           leftEyeSmoother.resetCache()
+           rightEyeSmoother.resetCache()
+            
             startBlinking = nil
             startWinking = nil
             eyesStatus = .nothing

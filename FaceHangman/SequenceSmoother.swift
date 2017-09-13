@@ -5,6 +5,7 @@
 //  Created by Jacopo Mangiavacchi on 20/06/2017.
 //  Copyright © 2017 Jacopo. All rights reserved.
 //
+
 import Foundation
 
 struct SequenceSmoother<Element> {
