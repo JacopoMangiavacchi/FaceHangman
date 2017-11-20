@@ -31,7 +31,7 @@ struct HangmanGame {
         get {
             var discovered = ""
             
-            for index in secret.characters.indices {
+            for index in secret.indices {
                 if secret[index] == " " || searchLetterInString(letter: String(secret[index]), string: lettersTried) {
                     discovered.append(secret[index])
                 }
@@ -155,7 +155,7 @@ struct HangmanGame {
     
     internal func searchLetterInString(letter: String, string: String) -> Bool {
         let needle = Character(letter)
-        if let _ = string.characters.index(of: needle) {
+        if let _ = string.index(of: needle) {
             //let pos = string.characters.distance(from: string.startIndex, to: _)
             return true
         }

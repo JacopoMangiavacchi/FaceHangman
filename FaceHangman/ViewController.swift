@@ -246,7 +246,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
 
     
     internal func spaceString(_ string: String) -> String {
-        return string.uppercased().characters.map({ c in "\(c) " }).joined()
+        return string.uppercased().map({ c in "\(c) " }).joined()
     }
     
     
@@ -304,7 +304,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                                     }
                                 }
                                 else {
-                                    print("--- SECRET Request Error \(response.error) ---")
+                                    print("--- SECRET Request Error \(String(describing: response.error)) ---")
                                 }
                             }
                         }
@@ -545,7 +545,7 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
                     
                     self.carousel.selectItem(0, animated: true)
                     hangmanImage.image = UIImage(named: "hangman_\(game!.failedAttempts).png")
-                    for c in game!.lettersTried.characters {
+                    for c in game!.lettersTried {
                         let letter = String(c).uppercased()
                         resetCarousel(letter)
                     }

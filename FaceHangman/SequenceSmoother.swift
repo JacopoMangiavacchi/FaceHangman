@@ -20,7 +20,7 @@ struct SequenceSmoother<Element> {
     fileprivate var divideFunc: elementDivideFunc!
     
     
-    init(cacheSize: Int = 5, emptyElement:Element, addFunc: @escaping elementAddFunc, divideFunc: @escaping elementDivideFunc) {
+    init(cacheSize: Int = 50, emptyElement:Element, addFunc: @escaping elementAddFunc, divideFunc: @escaping elementDivideFunc) {
         self.maxCacheSize = cacheSize
         self.currentPos = 0
         self.emptyElement = emptyElement

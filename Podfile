@@ -6,7 +6,7 @@ target 'FaceHangman' do
   use_frameworks!
 
   # Pods for FaceHangman
-  pod 'Alamofire', '~> 4.4'
+  pod 'Alamofire', '~> 4.5'
   pod 'Gifu'
   pod "SwiftCarousel"  
 end

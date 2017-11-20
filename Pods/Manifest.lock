@@ -1,18 +1,18 @@
 PODS:
-  - Alamofire (4.4.0)
-  - Gifu (2.0.0)
+  - Alamofire (4.5.1)
+  - Gifu (2.0.1)
   - SwiftCarousel (0.8.0)
 
 DEPENDENCIES:
-  - Alamofire (~> 4.4)
+  - Alamofire (~> 4.5)
   - Gifu
   - SwiftCarousel
 
 SPEC CHECKSUMS:
-  Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
-  Gifu: 56a4d8f1092399159fa32662aa2232158b48d8ac
+  Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
+  Gifu: 90bd26ea4d65f8322c4cca8cbb0ca1418f5457ad
   SwiftCarousel: a62f4e9b944d1bca4ccfe3f28abb6119e3e36b12
 
-PODFILE CHECKSUM: 1674b3c1fed89fddb871e22ea3dff0cb1b75d3bf
+PODFILE CHECKSUM: 0a4aaf19a45d2cacbeff3037ee6753e6cbed6050
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.3.1

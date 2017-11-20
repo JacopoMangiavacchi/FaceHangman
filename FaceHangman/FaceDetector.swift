@@ -37,7 +37,8 @@ class FaceDetector: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
     
     var delegate: FaceDetectorDelegate?
     
-    var cameraView : UIView = UIView()
+    var cameraView: UIView = UIView()
+    var cameraViewBonds: CGRect!
     
     //Private properties of the detected face that can be accessed (read-only) by other classes.
     fileprivate(set) var faceDetected  = false
@@ -110,6 +111,7 @@ class FaceDetector: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
             }
             
             cameraView.frame = UIScreen.main.bounds
+            cameraViewBonds = cameraView.bounds
             
             let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
             previewLayer.frame = UIScreen.main.bounds
@@ -145,7 +147,7 @@ class FaceDetector: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
             let faceFeatures = features as! [CIFaceFeature]
             if faceFeatures.count > 0 {
                 let feature = faceFeatures[0]
-                faceBounds = transformFacialFeatureRect(feature.bounds, videoRect: sourceImage.extent, previewRect: self.cameraView.bounds, isMirrored: true)
+                faceBounds = transformFacialFeatureRect(feature.bounds, videoRect: sourceImage.extent, previewRect: cameraViewBonds, isMirrored: true)
                 
                 if feature.hasFaceAngle {
                     
@@ -159,15 +161,15 @@ class FaceDetector: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
                 }
                 
                 if feature.hasLeftEyePosition {
-                    leftEyePosition = transformFacialFeaturePoint(feature.leftEyePosition, videoRect: sourceImage.extent, previewRect: self.cameraView.bounds, isMirrored: true)
+                    leftEyePosition = transformFacialFeaturePoint(feature.leftEyePosition, videoRect: sourceImage.extent, previewRect: cameraViewBonds, isMirrored: true)
                 }
                 
                 if feature.hasRightEyePosition {
-                    rightEyePosition = transformFacialFeaturePoint(feature.rightEyePosition, videoRect: sourceImage.extent, previewRect: self.cameraView.bounds, isMirrored: true)
+                    rightEyePosition = transformFacialFeaturePoint(feature.rightEyePosition, videoRect: sourceImage.extent, previewRect: cameraViewBonds, isMirrored: true)
                 }
                 
                 if feature.hasMouthPosition {
-                    mouthPosition = transformFacialFeaturePoint(feature.mouthPosition, videoRect: sourceImage.extent, previewRect: self.cameraView.bounds, isMirrored: true)
+                    mouthPosition = transformFacialFeaturePoint(feature.mouthPosition, videoRect: sourceImage.extent, previewRect: cameraViewBonds, isMirrored: true)
                 }
                 
                 if hasSmile != feature.hasSmile {
