@@ -516,18 +516,30 @@ class ViewController: UIViewController, FaceDetectorFilterDelegate {
         
         view.addSubview(faceMaskImage)
 
-        let diffBorder = faceMaskImage.bounds.width - (faceMaskImage.image!.size.width / (faceMaskImage.image!.size.height / faceMaskImage.bounds.height))
-        if diffBorder > 0 {
-            let leftBorder = UIView(frame: CGRect(x: 0, y: 0, width: diffBorder / 2, height: faceMaskImage.bounds.height))
+        let diffWidthBorder = faceMaskImage.bounds.width - (faceMaskImage.image!.size.width / (faceMaskImage.image!.size.height / faceMaskImage.bounds.height))
+        if diffWidthBorder > 0 {
+            let leftBorder = UIView(frame: CGRect(x: 0, y: 0, width: diffWidthBorder / 2, height: faceMaskImage.bounds.height))
             leftBorder.backgroundColor = .white
             leftBorder.alpha = 0.9
             view.addSubview(leftBorder)
-            let rightBorder = UIView(frame: CGRect(x: ( faceMaskImage.bounds.width - (diffBorder / 2)), y: 0, width: diffBorder / 2, height: faceMaskImage.bounds.height))
+            let rightBorder = UIView(frame: CGRect(x: ( faceMaskImage.bounds.width - (diffWidthBorder / 2)), y: 0, width: diffWidthBorder / 2, height: faceMaskImage.bounds.height))
             rightBorder.backgroundColor = .white
             rightBorder.alpha = 0.9
             view.addSubview(rightBorder)
         }
         
+        let diffHeightBorder = faceMaskImage.bounds.height - (faceMaskImage.image!.size.height / (faceMaskImage.image!.size.width / faceMaskImage.bounds.width))
+        if diffHeightBorder > 0 {
+            let topBorder = UIView(frame: CGRect(x: 0, y: 0, width: faceMaskImage.bounds.width, height: diffHeightBorder / 2))
+            topBorder.backgroundColor = .white
+            topBorder.alpha = 0.9
+            view.addSubview(topBorder)
+            let bottomBorder = UIView(frame: CGRect(x: 0, y: ( faceMaskImage.bounds.height - (diffHeightBorder / 2)), width: faceMaskImage.bounds.width, height: diffHeightBorder / 2))
+            bottomBorder.backgroundColor = .white
+            bottomBorder.alpha = 0.9
+            view.addSubview(bottomBorder)
+        }
+
         view.addSubview(hangmanImage)
         view.addSubview(leftEyeGif)
         view.addSubview(rightEyeGif)

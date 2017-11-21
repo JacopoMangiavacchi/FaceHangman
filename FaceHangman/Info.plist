@@ -17,14 +17,16 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2.0</string>
+	<string>1.1.2</string>
 	<key>CFBundleVersion</key>
-	<string>10</string>
+	<string>12</string>
 	<key>LSRequiresIPhoneOS</key>
 	<false/>
 	<key>NSCameraUsageDescription</key>
 	<string>Detect eye blink</string>
 	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
@@ -33,7 +35,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
@@ -45,7 +46,7 @@
 	<key>WordnikDefinitionURL</key>
 	<string>https://api.wordnik.com/v4/word.json/%@/definitions?api_key=%@</string>
 	<key>WordnikKey</key>
-	<string>x</string>
+	<string>31b3a219fca1714c8200f0c4bbb0813f18b404b16bb3ee8ae</string>
 	<key>WordnikSecretURL</key>
 	<string>https://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&amp;includePartOfSpeech=noun&amp;excludePartOfSpeech=proper-noun&amp;minCorpusCount=1&amp;maxCorpusCount=-1&amp;minDictionaryCount=3&amp;maxDictionaryCount=-1&amp;minLength=5&amp;maxLength=8&amp;limit=1&amp;api_key=%@</string>
 </dict>
